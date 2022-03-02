@@ -2,12 +2,13 @@ from flask import *
 app=Flask(__name__, template_folder="templates")
 app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True
-from flask_restx import Api, Resource, reqparse
+from flask_restx import Api, Resource, reqparse, fields
 import json
 from flaskext.mysql import MySQL
 import pymysql
 pymysql.install_as_MySQLdb()
 import pymysql.cursors
+
 
 # connect to the local DB
 db = pymysql.connect(host = "localhost", user = "root", password="12345678", database='website')
@@ -65,6 +66,7 @@ class AttractionApi(Resource):
         # convert the set of images to a list
         for d in result:
             d["file"] = image
+        # organize the result
         for site in result:
             data = {"id":site["id"],"name":site["stitle"],"category":site["CAT2"],"description":site["xbody"],"address":site["address"],"transport":site["info"],"mrt":site["MRT"],"latitude":site["latitude"],"longitude":site["longitude"],"images":site["file"]}
             finalResult.append(data)
@@ -84,6 +86,19 @@ class AttractionApi(Resource):
             return jsonify({"error":True, "message": "No relevant data"})
 
 
+
+@api.route('/api/attraction/<attractionId>')
+class AttractionID(Resource):
+    def get(self, attractionId):
+        # API parameter: page & keyword
+        cursor.execute("SELECT * FROM website.TPtrip WHERE id = %s",(attractionId))
+        result=cursor.fetchone()
+        if result != 0:   
+            result["file"] = image
+            finalResult={"data":{"id":result["id"],"name":result["stitle"],"category":result["CAT2"],"description":result["xbody"],"address":result["address"],"transport":result["info"],"mrt":result["MRT"],"latitude":result["latitude"],"longitude":result["longitude"],"images":result["file"]}}
+            #summary["data"]["images"]=ast.literal_eval(summary["data"]["images"])
+            return jsonify(finalResult)
+        return jsonify({"error":True,"message":"No relevant data"})
 # Pages
 @app.route("/")
 def index():
