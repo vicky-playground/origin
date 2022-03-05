@@ -77,7 +77,7 @@ class AttractionApi(Resource):
             pages = len(finalResult)//12 + 1 
         # check the page input and result output
         if arg['page'] == (pages-1):
-            finalResult = [val for idx, val in enumerate(result) if (idx >= (len(result)//12-1)*12)]
+            finalResult = [val for idx, val in enumerate(finalResult) if (idx >= (len(result)//12-1)*12)]
             return jsonify({"nextPage": None, 'data' : finalResult}) 
         elif arg['page'] < pages:
             finalResult = [val for idx, val in enumerate(finalResult) if (idx < 12*(arg['page']+1) and idx >= (arg['page'])*12)]
