@@ -57,32 +57,44 @@ class AttractionApi(Resource):
         arg = parser.parse_args()
         keyword = arg['keyword']
         if keyword is not None:
-            cursor.execute("SELECT id,stitle,CAT2,xbody,address,info,MRT,latitude,longitude,file FROM website.TPtrip WHERE stitle LIKE %s",("%"+keyword+"%"))
+            cursor.execute("SELECT id,stitle,CAT2,xbody,address,info,MRT,latitude,longitude,file FROM website.TPtrip WHERE stitle LIKE %s LIMIT %s, %s",(("%"+keyword+"%"),(arg['page']+1)*12-12,(arg['page']+1)*12))
             result = cursor.fetchall()
+            dataLen = len(result)
+            rowcount = cursor.rowcount
+            # the organized result
+            finalResult = []
+            # convert the set of images to a list
+            for d in result:
+                d["file"] = image
+            for site in result:
+                data = OrderedDict(id = site["id"], name = site["stitle"], category = site["CAT2"], description = site["xbody"], address = site["address"], transport = site["info"], mrt = site["MRT"], latitude = site["latitude"], longitude = site["longitude"], images = site["file"])
+                finalResult.append(data)
+            if dataLen > 0:
+                # output
+                if rowcount < 12 :
+                    return jsonify({"nextPage": None, 'data' : finalResult}) 
+                else:
+                    return jsonify({"nextPage": arg['page']+1, 'data' : finalResult})        
+            return jsonify({"error":True, "message": "No relevant data"})
         else:
-            cursor.execute("SELECT id,stitle,CAT2,xbody,address,info,MRT,latitude,longitude,file FROM website.TPtrip")
+            cursor.execute("SELECT id,stitle,CAT2,xbody,address,info,MRT,latitude,longitude,file FROM website.TPtrip LIMIT %s, %s",((arg['page']+1)*12-12,(arg['page']+1)*12))
             result = cursor.fetchall()
-        # the organized result
-        finalResult = []
-        # convert the set of images to a list
-        for d in result:
-            d["file"] = image
-        for site in result:
-            data = OrderedDict(id = site["id"], name = site["stitle"], category = site["CAT2"], description = site["xbody"], address = site["address"], transport = site["info"], mrt = site["MRT"], latitude = site["latitude"], longitude = site["longitude"], images = site["file"])
-            finalResult.append(data)
-        # calculate how many pages should be
-        if len(finalResult)%12 == 0:
-            pages = len(finalResult)//12  
-        else:
-            pages = len(finalResult)//12 + 1 
-        # check the page input and result output
-        if arg['page'] == (pages-1):
-            finalResult = [val for idx, val in enumerate(finalResult) if (idx >= (len(result)//12-1)*12)]
-            return jsonify({"nextPage": None, 'data' : finalResult}) 
-        elif arg['page'] < pages:
-            finalResult = [val for idx, val in enumerate(finalResult) if (idx < 12*(arg['page']+1) and idx >= (arg['page'])*12)]
-            return jsonify({"nextPage": arg['page']+1, 'data' : finalResult})
-        else:
+            dataLen = len(result)
+            rowcount = cursor.rowcount
+            # the organized result
+            finalResult = []
+            # convert the set of images to a list
+            for d in result:
+                d["file"] = image
+            for site in result:
+                data = OrderedDict(id = site["id"], name = site["stitle"], category = site["CAT2"], description = site["xbody"], address = site["address"], transport = site["info"], mrt = site["MRT"], latitude = site["latitude"], longitude = site["longitude"], images = site["file"])
+                finalResult.append(data)
+            if dataLen > 0:
+                # output
+                if rowcount < 12 :
+                    return jsonify({"nextPage": None, 'data' : finalResult}) 
+                else:
+                    return jsonify({"nextPage": arg['page']+1, 'data' : finalResult})
             return jsonify({"error":True, "message": "No relevant data"})
 
 @api.route('/api/attraction/<attractionId>')
