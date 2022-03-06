@@ -2,15 +2,17 @@ from flask import *
 app=Flask(__name__, template_folder="templates")
 app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True
-from flask_restx import Api, Resource, reqparse
+app.config['JSON_SORT_KEYS'] = False
+from flask_restx import Api, Resource, reqparse, fields
 import json
 from flaskext.mysql import MySQL
 import pymysql
 pymysql.install_as_MySQLdb()
 import pymysql.cursors
+from collections import OrderedDict
 
 # connect to the local DB
-db = pymysql.connect(host = "localhost", user = "root", password="12345678", database='website', port= 3306)
+db = pymysql.connect(host = "127.0.0.1", user = "root", password="12345678", database='website', port= 3306)
 cursor = db.cursor(pymysql.cursors.DictCursor)
 
 # create a table in the database
@@ -55,34 +57,57 @@ class AttractionApi(Resource):
         arg = parser.parse_args()
         keyword = arg['keyword']
         if keyword is not None:
-            cursor.execute("SELECT * FROM website.TPtrip WHERE stitle LIKE %s",("%"+keyword+"%"))
+            cursor.execute("SELECT id,stitle,CAT2,xbody,address,info,MRT,latitude,longitude,file FROM website.TPtrip WHERE stitle LIKE %s LIMIT %s, %s",(("%"+keyword+"%"),(arg['page']+1)*12-12,(arg['page']+1)*12))
             result = cursor.fetchall()
+            dataLen = len(result)
+            rowcount = cursor.rowcount
+            # the organized result
+            finalResult = []
+            # convert the set of images to a list
+            for d in result:
+                d["file"] = image
+            for site in result:
+                data = OrderedDict(id = site["id"], name = site["stitle"], category = site["CAT2"], description = site["xbody"], address = site["address"], transport = site["info"], mrt = site["MRT"], latitude = site["latitude"], longitude = site["longitude"], images = site["file"])
+                finalResult.append(data)
+            if dataLen > 0:
+                # output
+                if rowcount < 12 :
+                    return jsonify({"nextPage": None, 'data' : finalResult}) 
+                else:
+                    return jsonify({"nextPage": arg['page']+1, 'data' : finalResult})        
+            return jsonify({"error":True, "message": "No relevant data"})
         else:
-            cursor.execute("SELECT * FROM website.TPtrip")
+            cursor.execute("SELECT id,stitle,CAT2,xbody,address,info,MRT,latitude,longitude,file FROM website.TPtrip LIMIT %s, %s",((arg['page']+1)*12-12,(arg['page']+1)*12))
             result = cursor.fetchall()
-        # the organized result
-        finalResult = []
-        # convert the set of images to a list
-        for d in result:
-            d["file"] = image
-        for site in result:
-            data = {"id":site["id"],"name":site["stitle"],"category":site["CAT2"],"description":site["xbody"],"address":site["address"],"transport":site["info"],"mrt":site["MRT"],"latitude":site["latitude"],"longitude":site["longitude"],"images":site["file"]}
-            finalResult.append(data)
-        # calculate how many pages should be
-        if len(finalResult)%12 == 0:
-            pages = len(finalResult)//12  
-        else:
-            pages = len(finalResult)//12 + 1 
-        # check the page input and result output
-        if arg['page'] < pages:
-            finalResult = [val for idx, val in enumerate(finalResult) if (idx < 12*arg['page'] and idx >= (arg['page']-1)*12)]
-            return jsonify({"nextPage": arg['page']+1, 'data' : finalResult})
-        elif arg['page'] == pages:
-            finalResult = [val for idx, val in enumerate(result) if (idx >= (len(result)//12-1)*12)]
-            return jsonify({"nextPage": None, 'data' : finalResult})
-        else:
+            dataLen = len(result)
+            rowcount = cursor.rowcount
+            # the organized result
+            finalResult = []
+            # convert the set of images to a list
+            for d in result:
+                d["file"] = image
+            for site in result:
+                data = OrderedDict(id = site["id"], name = site["stitle"], category = site["CAT2"], description = site["xbody"], address = site["address"], transport = site["info"], mrt = site["MRT"], latitude = site["latitude"], longitude = site["longitude"], images = site["file"])
+                finalResult.append(data)
+            if dataLen > 0:
+                # output
+                if rowcount < 12 :
+                    return jsonify({"nextPage": None, 'data' : finalResult}) 
+                else:
+                    return jsonify({"nextPage": arg['page']+1, 'data' : finalResult})
             return jsonify({"error":True, "message": "No relevant data"})
 
+@api.route('/api/attraction/<attractionId>')
+class AttractionID(Resource):
+    def get(self, attractionId):
+        # API parameter: page & keyword
+        cursor.execute("SELECT id,stitle,CAT2,xbody,address,info,MRT,latitude,longitude,file FROM website.TPtrip WHERE id = %s",(attractionId))
+        result=cursor.fetchone()
+        if result != 0:   
+            result["file"] = image
+            finalResult={"data":OrderedDict(id = result["id"], name = result["stitle"], category = result["CAT2"], description = result["xbody"], address = result["address"], transport = result["info"], mrt = result["MRT"], latitude = result["latitude"], longitude = result["longitude"], images = result["file"])}
+            return jsonify(finalResult)
+        return jsonify({"error":True,"message":"No relevant data"})
 
 # Pages
 @app.route("/")
@@ -98,7 +123,7 @@ def booking():
 def thankyou():
 	return render_template("thankyou.html")
 
-# Run the RESTful API server
-app.run(port= 3000)
+if __name__=="__main__":
+	app.run(host='0.0.0.0',port=3000)
 
 

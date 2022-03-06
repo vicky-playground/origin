@@ -1,5 +1,4 @@
 # WeHelp Phase 2
-EC2: 
 http://13.214.106.215:3000/
 
 http://13.214.106.215:3000/api/attraction/2
