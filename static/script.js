@@ -46,6 +46,7 @@ async function getData(page=0, keyword) {
   }
 }
 
+// display the content of attractions
 function display(nextPage, data, keyword) {
   for (let i = 0; i < data.length; i++) {
     let img = data[i].images[0];
