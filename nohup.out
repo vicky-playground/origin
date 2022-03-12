@@ -1,2 +1,0 @@
-  File "app.py", line 47
-SyntaxError: Non-ASCII character '\xe8' in file app.py on line 47, but no encoding declared; see http://python.org/dev/peps/pep-0263/ for details
