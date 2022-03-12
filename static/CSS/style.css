@@ -185,7 +185,7 @@ img {
     margin-bottom: end;
 }
   
-  /* 桌機筆電 (> 1200px) */
+  /* laptop: > 1200px */
 @media all and (min-width: 1200.01px) {
   .nav {
       width: 1200px;
@@ -229,7 +229,7 @@ img {
   }
 }
   
-  /* 平板 (<=1200px, > 600px)*/
+  /* tablet: <=1200px, > 600px */
 @media all and (max-width: 1200px) {
   .hero {
     width: 100vw;
@@ -264,7 +264,7 @@ img {
   }
 }
   
-/* 行動裝置 (<= 600px, min 360px) */
+/* mobile: <= 600px, min 360px */
 @media all and (max-width: 600px) {
   .hero-block {
     height: 280px;
