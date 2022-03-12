@@ -185,8 +185,8 @@ img {
     margin-bottom: end;
 }
   
-  /* laptop: > 1200px */
-@media all and (min-width: 1200.01px) {
+ /* Media Query for Laptops and Desktops */
+ @media (min-width: 1025px){
   .nav {
       width: 1200px;
   }
@@ -229,8 +229,8 @@ img {
   }
 }
   
-  /* tablet: <=1200px, > 600px */
-@media all and (max-width: 1200px) {
+/* Media Query for Tablets Ipads portrait mode */
+@media (min-width: 481px) and (max-width: 1024px){
   .hero {
     width: 100vw;
     background-size: 55%;
@@ -265,7 +265,7 @@ img {
 }
   
 /* mobile: <= 600px, min 360px */
-@media all and (max-width: 600px) {
+@media (max-width: 480px) {
   .hero-block {
     height: 280px;
   }
