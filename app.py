@@ -97,6 +97,7 @@ def attractionAPI():
             finalResult.append(data)
         if dataLen > 0:
             # output
+            if rowcount < 12 :
                 return jsonify({"nextPage": None, 'data' : finalResult}) 
             else:
                 return jsonify({"nextPage": page+1, 'data' : finalResult})
