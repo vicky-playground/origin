@@ -11,13 +11,11 @@ function load() {
 
 // get the attractions; return a array list of [nextPage, data]
 async function getData(page=0, keyword) { 
-  console.log(keyword)
   // if there is a keyword 
   if ( keyword != null && keyword != undefined && keyword != ""){
     const res = await fetch(`/api/attractions?page=${page}&keyword=${keyword}`)
     .then(response => response.json())
     .then(res => {
-      console.log(res)
       let nextPage = res["nextPage"];
       let data = res["data"];
       console.log(nextPage, data)
@@ -81,14 +79,15 @@ function display(nextPage, data, keyword) {
   // if there is next page
   if (nextPage){ 
     page = nextPage
+    let paused = false;
     window.onscroll = function () {
       // when the user is at the bottom of the page
-      if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+      if (((window.innerHeight + window.scrollY) >= document.body.offsetHeight) && !paused) {
+        paused = true;
         getData(page, keyword)
           .then(res => { 
             let nextPage = res[0];
             let data = res[1];
-            console.log(nextPage, data)
             display(nextPage, data);
           });
       }
@@ -107,7 +106,6 @@ function search() {
   if (keyword != '') {
     getData(0, keyword)
       .then(res => {
-        console.log(res)
         let nextPage = res[0];
         let data = res[1];
         // if there is no such keyword
