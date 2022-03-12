@@ -123,5 +123,8 @@ function search() {
       })
       .catch(err => console.log('Error: ' + err))
   }
+  else{
+    load()
+  }
 }
 
