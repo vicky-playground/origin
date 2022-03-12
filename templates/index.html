@@ -1,0 +1,40 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='CSS/style.css') }}">
+    <script type="text/javascript" src="../static/script.js" defer></script>
+    <title>Taipei Attractions</title>
+</head>
+<body onload="load()">
+    <div class='nav-bar'>
+        <div class='nav'>
+          <div class='page_name'>台北一日遊</div>
+          <div class='btn-container'>
+            <div class='btn'>預定行程</div>
+            <div class='btn'>登入/註冊</div>
+          </div>
+        </div>
+      </div>
+      <div class='hero-block'>
+        <div class='hero'>
+          <div class='hero-content'>
+            <div class='hero-title'>輕鬆享受台北一日悠閒</div>
+            <div class='hero-subtitle'>探索每個角落，體驗城市的深度旅遊行程</div>
+              <div class='search'>
+                <input type="text" placeholder='輸入景點名稱查詢'>
+                <button id='search' type="submit" onclick="search()">
+                  <img src='../static/IMG/icon_search.png'>
+                </button>
+              </div>
+          </div>
+        </div>
+      </div>
+      <div class='attractions'>
+        <div id='grid-container'>
+        </div>
+      </div>
+      <footer id='footer'>COPYRIGHT © 2021 台北一日遊</footer>
+</body>
+</html>
+        <!--<img class="img" src="static/IMG/welcome.png"> -->

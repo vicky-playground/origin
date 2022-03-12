@@ -1,14 +1,15 @@
+import string
 from flask import *
+from numpy import integer
 app=Flask(__name__, template_folder="templates")
 app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True
 app.config['JSON_SORT_KEYS'] = False
-from flask_restx import Api, Resource, reqparse, fields
 import json
-from flaskext.mysql import MySQL
 import pymysql
-pymysql.install_as_MySQLdb()
 import pymysql.cursors
+import ast
+pymysql.install_as_MySQLdb()
 from collections import OrderedDict
 
 # connect to the local DB
@@ -30,9 +31,9 @@ dataList = data["result"]["results"]
 # insert values into database without duplicate values
 sql = "INSERT IGNORE INTO TPtrip (info, stitle , longitude, latitude, MRT, CAT2, MEMO_TIME, file, xbody, address) VALUES (%s, %s, %s, %s, %s, %s, %s, %r, %s, %s)"
 
-# fetch the data 
+# add the data into the database
 for k in range(len(dataList)):
-	image =  ["https"+e for e in dataList[k]["file"].split("https") if e]
+	image =  ["https" + e for e in dataList[k]["file"].split("https") if e]
 	# filter out URLs which are not ended with jpg or png
 	for i in image:
 		if not (i.endswith("JPG") or i.endswith("jpg") or i.endswith("png") or i.endswith("PNG")):
@@ -40,74 +41,6 @@ for k in range(len(dataList)):
 	val = (dataList[k]["info"], dataList[k]["stitle"], dataList[k]["longitude"], dataList[k]["latitude"], dataList[k]["MRT"], dataList[k]["CAT2"], dataList[k]["MEMO_TIME"],image, dataList[k]["xbody"], dataList[k]["address"])
 	cursor.execute(sql, val)
 	db.commit()
-
-api = Api(app, description="Attraction API")
-parser = reqparse.RequestParser()
-parser.add_argument(
-    "page", type=int,  help='要取得的分頁，每頁 12 筆資料', required=True, nullable=False
-)
-parser.add_argument(
-    "keyword", type=str,  help='篩選景點名稱的關鍵字，沒有給定則不做篩選'
-)
-@api.route('/api/attractions')
-class AttractionApi(Resource):
-    @api.doc(parser=parser)
-    def get(self):
-        # API parameter: page & keyword
-        arg = parser.parse_args()
-        keyword = arg['keyword']
-        if keyword is not None:
-            cursor.execute("SELECT id,stitle,CAT2,xbody,address,info,MRT,latitude,longitude,file FROM website.TPtrip WHERE stitle LIKE %s LIMIT %s, %s",(("%"+keyword+"%"),(arg['page']+1)*12-12,(arg['page']+1)*12))
-            result = cursor.fetchall()
-            dataLen = len(result)
-            rowcount = cursor.rowcount
-            # the organized result
-            finalResult = []
-            # convert the set of images to a list
-            for d in result:
-                d["file"] = image
-            for site in result:
-                data = OrderedDict(id = site["id"], name = site["stitle"], category = site["CAT2"], description = site["xbody"], address = site["address"], transport = site["info"], mrt = site["MRT"], latitude = site["latitude"], longitude = site["longitude"], images = site["file"])
-                finalResult.append(data)
-            if dataLen > 0:
-                # output
-                if rowcount < 12 :
-                    return jsonify({"nextPage": None, 'data' : finalResult}) 
-                else:
-                    return jsonify({"nextPage": arg['page']+1, 'data' : finalResult})        
-            return jsonify({"error":True, "message": "No relevant data"})
-        else:
-            cursor.execute("SELECT id,stitle,CAT2,xbody,address,info,MRT,latitude,longitude,file FROM website.TPtrip LIMIT %s, %s",((arg['page']+1)*12-12,(arg['page']+1)*12))
-            result = cursor.fetchall()
-            dataLen = len(result)
-            rowcount = cursor.rowcount
-            # the organized result
-            finalResult = []
-            # convert the set of images to a list
-            for d in result:
-                d["file"] = image
-            for site in result:
-                data = OrderedDict(id = site["id"], name = site["stitle"], category = site["CAT2"], description = site["xbody"], address = site["address"], transport = site["info"], mrt = site["MRT"], latitude = site["latitude"], longitude = site["longitude"], images = site["file"])
-                finalResult.append(data)
-            if dataLen > 0:
-                # output
-                if rowcount < 12 :
-                    return jsonify({"nextPage": None, 'data' : finalResult}) 
-                else:
-                    return jsonify({"nextPage": arg['page']+1, 'data' : finalResult})
-            return jsonify({"error":True, "message": "No relevant data"})
-
-@api.route('/api/attraction/<attractionId>')
-class AttractionID(Resource):
-    def get(self, attractionId):
-        # API parameter: page & keyword
-        cursor.execute("SELECT id,stitle,CAT2,xbody,address,info,MRT,latitude,longitude,file FROM website.TPtrip WHERE id = %s",(attractionId))
-        result=cursor.fetchone()
-        if result != 0:   
-            result["file"] = image
-            finalResult={"data":OrderedDict(id = result["id"], name = result["stitle"], category = result["CAT2"], description = result["xbody"], address = result["address"], transport = result["info"], mrt = result["MRT"], latitude = result["latitude"], longitude = result["longitude"], images = result["file"])}
-            return jsonify(finalResult)
-        return jsonify({"error":True,"message":"No relevant data"})
 
 # Pages
 @app.route("/")
@@ -123,7 +56,69 @@ def booking():
 def thankyou():
 	return render_template("thankyou.html")
 
+@app.route("/api/attractions", methods=["GET"])
+def attractionAPI():
+	# API parameter: page & keyword
+    keyword = request.args.get('keyword')
+    page = int(float(request.args.get("page")))
+    if keyword != None and keyword != "":
+        cursor.execute("SELECT id,stitle,CAT2,xbody,address,info,MRT,latitude,longitude,file FROM website.TPtrip WHERE stitle LIKE %s LIMIT %s, %s",(("%"+str(keyword)+"%"),(page+1)*12-12,(page+1)*12))
+        result = cursor.fetchall()
+        dataLen = len(result)
+        rowcount = cursor.rowcount
+        # the organized result
+        finalResult = []
+        for site in result:
+            data = OrderedDict(id = site["id"], name = site["stitle"], category = site["CAT2"], description = site["xbody"], address = site["address"], transport = site["info"], mrt = site["MRT"], latitude = site["latitude"], longitude = site["longitude"], images = site["file"])
+            # convert the set of images to a list
+            data["images"] = ast.literal_eval(data["images"])
+            finalResult.append(data)
+        if dataLen > 0:
+            # output
+            if rowcount < 12 :
+                return jsonify({"nextPage": None, 'data' : finalResult}) 
+            else:
+                return jsonify({"nextPage": page+1, 'data' : finalResult})        
+        return jsonify({"error":True, "message": "No relevant data"})
+    else:
+        if page == None:
+            page = 0
+        cursor.execute("SELECT id,stitle,CAT2,xbody,address,info,MRT,latitude,longitude,file FROM website.TPtrip WHERE id>=%s AND id<=%s",((page+1)*12-11,(page+1)*12))
+        result = cursor.fetchall()
+        dataLen = len(result)
+        rowcount = cursor.rowcount
+        # the organized result
+        finalResult = []
+        # convert the set of images to a list
+        for site in result:
+            data = OrderedDict(id = site["id"], name = site["stitle"], category = site["CAT2"], description = site["xbody"], address = site["address"], transport = site["info"], mrt = site["MRT"], latitude = site["latitude"], longitude = site["longitude"], images = site["file"])
+            # convert the set of images to a list
+            data["images"] = ast.literal_eval(data["images"])
+            finalResult.append(data)
+        if dataLen > 0:
+            # output
+            if rowcount < 12 :
+                return jsonify({"nextPage": None, 'data' : finalResult}) 
+            else:
+                return jsonify({"nextPage": page+1, 'data' : finalResult})
+        return jsonify({"error":True, "message": "No relevant data"})
+		
+
+@app.route("/api/attraction/<attractionId>", methods=["GET"])
+def attractionIdApi(attractionId):
+	# API parameter: page & keyword
+    cursor.execute("SELECT id,stitle,CAT2,xbody,address,info,MRT,latitude,longitude,file FROM website.TPtrip WHERE id = %s",(attractionId))
+    result=cursor.fetchone()
+    if result != 0:   
+        finalResult={"data":OrderedDict(id = result["id"], name = result["stitle"], category = result["CAT2"], description = result["xbody"], address = result["address"], transport = result["info"], mrt = result["MRT"], latitude = result["latitude"], longitude = result["longitude"], images = result["file"])}
+          # convert the set of images to a list
+        data["images"] = ast.literal_eval(data["images"])
+        return jsonify(finalResult)
+    return jsonify({"error":True,"message":"No relevant data"})
+
+
+
 if __name__=="__main__":
-	app.run(host='0.0.0.0',port=3000)
+	app.run(host='0.0.0.0',port=3000, use_reloader=False)
 
 
