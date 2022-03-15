@@ -16,14 +16,27 @@ from collections import OrderedDict
 # connect to the local DB
 pool = Pool(host = "127.0.0.1", user = "root", password="12345678", database='website', port= 3306)
 pool.init()
+# conenct the pool
 db = pool.get_conn()
-cursor = db.cursor(pymysql.cursors.DictCursor)
+cursor = db.cursor()
 
 # create a table in the database
 sql="CREATE TABLE IF NOT EXISTS TPtrip (id INT AUTO_INCREMENT, info VARCHAR(255), stitle VARCHAR(10) UNIQUE, longitude VARCHAR(10), latitude VARCHAR(10), MRT VARCHAR(10), CAT2 VARCHAR(10), MEMO_TIME LONGTEXT, file LONGTEXT, xbody LONGTEXT, address VARCHAR(255), PRIMARY KEY (id))"
 cursor.execute(sql)
+# close the pool
+cursor.close()
+db.close()
+
+# conenct the pool
+db = pool.get_conn()
+cursor = db.cursor()
+
 sql = "ALTER TABLE TPtrip AUTO_INCREMENT=1"
 cursor.execute(sql)
+
+# close the pool
+cursor.close()
+db.close()
 
 # import the JSON file
 with open('data/taipei-attractions.json', 'r') as f:   	
@@ -36,14 +49,22 @@ sql = "INSERT IGNORE INTO TPtrip (info, stitle , longitude, latitude, MRT, CAT2,
 
 # add the data into the database
 for k in range(len(dataList)):
-	image =  ["https" + e for e in dataList[k]["file"].split("https") if e]
+    image =  ["https" + e for e in dataList[k]["file"].split("https") if e]
+    # conenct the pool
+    pool.init()
+    db = pool.get_conn()
+    cursor = db.cursor()
 	# filter out URLs which are not ended with jpg or png
-	for i in image:
-		if not (i.endswith("JPG") or i.endswith("jpg") or i.endswith("png") or i.endswith("PNG")):
-			image.remove(i)
-	val = (dataList[k]["info"], dataList[k]["stitle"], dataList[k]["longitude"], dataList[k]["latitude"], dataList[k]["MRT"], dataList[k]["CAT2"], dataList[k]["MEMO_TIME"],image, dataList[k]["xbody"], dataList[k]["address"])
-	cursor.execute(sql, val)
-	db.commit()
+    for i in image:
+        if not (i.endswith("JPG") or i.endswith("jpg") or i.endswith("png") or i.endswith("PNG")):
+            image.remove(i)
+    val = (dataList[k]["info"], dataList[k]["stitle"], dataList[k]["longitude"], dataList[k]["latitude"], dataList[k]["MRT"], dataList[k]["CAT2"], dataList[k]["MEMO_TIME"],image, dataList[k]["xbody"], dataList[k]["address"])
+    cursor.execute(sql, val)
+    db.commit()
+    # close the pool
+    cursor.close()
+    db.close()
+
 
 # Pages
 @app.route("/")
@@ -65,8 +86,18 @@ def attractionAPI():
     keyword = request.args.get('keyword')
     page = int(float(request.args.get("page")))
     if keyword != None and keyword != "":
+        # conenct the pool
+        pool.init()
+        db = pool.get_conn()
+        cursor = db.cursor()
+
         cursor.execute("SELECT id,stitle,CAT2,xbody,address,info,MRT,latitude,longitude,file FROM website.TPtrip WHERE stitle LIKE %s LIMIT %s, %s",(("%"+str(keyword)+"%"),(page+1)*12-12,(page+1)*12))
         result = cursor.fetchall()
+
+        # close the pool
+        cursor.close()
+        db.close()
+
         dataLen = len(result)
         rowcount = cursor.rowcount
         # the organized result
@@ -86,8 +117,17 @@ def attractionAPI():
     else:
         if page == None:
             page = 0
+        # conenct the pool
+        pool.init()
+        db = pool.get_conn()
+        cursor = db.cursor()
+
         cursor.execute("SELECT id,stitle,CAT2,xbody,address,info,MRT,latitude,longitude,file FROM website.TPtrip WHERE id>=%s AND id<=%s",((page+1)*12-11,(page+1)*12))
         result = cursor.fetchall()
+        # close the pool
+        cursor.close()
+        db.close()
+
         dataLen = len(result)
         rowcount = cursor.rowcount
         # the organized result
@@ -109,9 +149,17 @@ def attractionAPI():
 
 @app.route("/api/attraction/<attractionId>", methods=["GET"])
 def attractionIdApi(attractionId):
+    # conenct the pool
+    pool.init()
+    db = pool.get_conn()
+    cursor = db.cursor()
 	# API parameter: page & keyword
     cursor.execute("SELECT id,stitle,CAT2,xbody,address,info,MRT,latitude,longitude,file FROM website.TPtrip WHERE id = %s",(attractionId))
     result=cursor.fetchone()
+    # close the pool
+    cursor.close()
+    db.close()
+    
     if result != 0:   
         finalResult={"data":OrderedDict(id = result["id"], name = result["stitle"], category = result["CAT2"], description = result["xbody"], address = result["address"], transport = result["info"], mrt = result["MRT"], latitude = result["latitude"], longitude = result["longitude"], images = result["file"])}
           # convert the set of images to a list
