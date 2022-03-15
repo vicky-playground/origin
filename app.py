@@ -8,12 +8,15 @@ app.config['JSON_SORT_KEYS'] = False
 import json
 import pymysql
 import pymysql.cursors
+from pymysqlpool.pool import Pool
 import ast
 pymysql.install_as_MySQLdb()
 from collections import OrderedDict
 
 # connect to the local DB
-db = pymysql.connect(host = "127.0.0.1", user = "root", password="12345678", database='website', port= 3306)
+pool = Pool(host = "127.0.0.1", user = "root", password="12345678", database='website', port= 3306)
+pool.init()
+db = pool.get_conn()
 cursor = db.cursor(pymysql.cursors.DictCursor)
 
 # create a table in the database
