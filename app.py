@@ -168,7 +168,7 @@ def attractionIdApi(attractionId):
         pool.release(conn)
         cursor.close()
 
-conn.close()
+
 
 
 
