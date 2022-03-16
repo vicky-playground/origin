@@ -25,6 +25,7 @@ sql="CREATE TABLE IF NOT EXISTS TPtrip (id INT AUTO_INCREMENT, info VARCHAR(255)
 cursor.execute(sql)
 # release the connection back to the pool for reuse
 pool.release(conn)
+cursor.close()
 
 # conenct the pool
 conn = pool.get_conn()
@@ -34,6 +35,7 @@ sql = "ALTER TABLE TPtrip AUTO_INCREMENT=1"
 cursor.execute(sql)
 # release the connection back to the pool for reuse
 pool.release(conn)
+cursor.close()
 
 # import the JSON file
 with open('data/taipei-attractions.json', 'r') as f:   	
@@ -60,6 +62,7 @@ for k in range(len(dataList)):
     conn.commit()
     # release the connection back to the pool for reuse
     pool.release(conn)
+    cursor.close()
 
 
 # Pages
@@ -92,6 +95,7 @@ def attractionAPI():
         result = cursor.fetchall()
         # release the connection back to the pool for reuse
         pool.release(conn)
+        cursor.close()
 
         dataLen = len(result)
         rowcount = cursor.rowcount
@@ -121,6 +125,7 @@ def attractionAPI():
         result = cursor.fetchall()
         # release the connection back to the pool for reuse
         pool.release(conn)
+        cursor.close()
 
         dataLen = len(result)
         rowcount = cursor.rowcount
@@ -152,6 +157,7 @@ def attractionIdApi(attractionId):
     result=cursor.fetchone()
     # release the connection back to the pool for reuse
     pool.release(conn)
+    cursor.close()
     
     if result != 0:   
         finalResult={"data":OrderedDict(id = result["id"], name = result["stitle"], category = result["CAT2"], description = result["xbody"], address = result["address"], transport = result["info"], mrt = result["MRT"], latitude = result["latitude"], longitude = result["longitude"], images = result["file"])}
@@ -160,7 +166,7 @@ def attractionIdApi(attractionId):
         return jsonify(finalResult)
     return jsonify({"error":True,"message":"No relevant data"})
 
-cursor.close()
+
 conn.close()
 
 if __name__=="__main__":
