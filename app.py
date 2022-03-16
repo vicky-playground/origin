@@ -148,26 +148,30 @@ def attractionAPI():
 
 @app.route("/api/attraction/<attractionId>", methods=["GET"])
 def attractionIdApi(attractionId):
-    # conenct the pool
-    pool.init()
-    conn = pool.get_conn()
-    cursor = conn.cursor()
-	# API parameter: page & keyword
-    cursor.execute("SELECT id,stitle,CAT2,xbody,address,info,MRT,latitude,longitude,file FROM website.TPtrip WHERE id = %s",(attractionId))
-    result=cursor.fetchone()
-    # release the connection back to the pool for reuse
-    pool.release(conn)
-    cursor.close()
-    
-    if result != 0:   
-        finalResult={"data":OrderedDict(id = result["id"], name = result["stitle"], category = result["CAT2"], description = result["xbody"], address = result["address"], transport = result["info"], mrt = result["MRT"], latitude = result["latitude"], longitude = result["longitude"], images = result["file"])}
-          # convert the set of images to a list
-        data["images"] = ast.literal_eval(data["images"])
-        return jsonify(finalResult)
-    return jsonify({"error":True,"message":"No relevant data"})
-
+    try:
+        # conenct the pool
+        pool.init()
+        conn = pool.get_conn()
+        cursor = conn.cursor()
+	    # API parameter: page & keyword
+        cursor.execute("SELECT id,stitle,CAT2,xbody,address,info,MRT,latitude,longitude,file FROM website.TPtrip WHERE id = %s",(attractionId))
+        result=cursor.fetchone()
+        if result != 0:   
+            finalResult = {"data":OrderedDict(id = result["id"], name = result["stitle"], category = result["CAT2"], description = result["xbody"], address = result["address"], transport = result["info"], mrt = result["MRT"], latitude = result["latitude"], longitude = result["longitude"], images = result["file"])}
+            # convert the set of images to a list
+            finalResult["data"]["images"] = ast.literal_eval(finalResult["data"]["images"])
+            return jsonify(finalResult)
+    except:
+        return jsonify({"error":True,"message":"No relevant data"})
+    finally:
+       # release the connection back to the pool for reuse
+        pool.release(conn)
+        cursor.close()
 
 conn.close()
+
+
+
 
 if __name__=="__main__":
 	app.run(host='0.0.0.0',port=3000, use_reloader=False)
