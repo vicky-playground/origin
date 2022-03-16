@@ -21,9 +21,7 @@ async function getData(page=0, keyword) {
       console.log(nextPage, data)
       return [nextPage, data]; 
     })
-    .catch(function(err) {
-      console.log('Fetch problem: ' + err.message);
-    });
+    .catch(err => console.log('Error: ' + err));
     return res;  
   }
   // when there is no keyword
@@ -37,9 +35,7 @@ async function getData(page=0, keyword) {
       let data = result["data"]; 
       return [nextPage, data]; 
     })
-    .catch(err => {
-      console.log('Fetch problem: ' + err.message);
-    }); 
+    .catch(err => console.log('Error: ' + err));
     return res;  
   }
 }
@@ -75,6 +71,10 @@ function display(nextPage, data, keyword) {
     siteInfo.appendChild(siteMrt);
     siteInfo.appendChild(siteType);
     document.getElementById('grid-container').appendChild(site);
+
+    let id = data[i].id;
+    // redirect to the route of attraction(id) when clicking
+    site.setAttribute('onclick',`window.location.href="/attraction/${id}"`)
   }
   // if there is next page
   if (nextPage){ 
@@ -110,18 +110,33 @@ function search() {
         let data = res[1];
         // if there is no such keyword
         if (!data){
-          document.getElementById("grid-container").innerHTML="";
-          document.getElementById("grid-container").innerHTML="查無資料";
+          if (!document.getElementById('no')){
+            document.querySelectorAll('.site').forEach(i => i.remove());
+            let no = document.createElement('div');
+            no.id = 'no';
+            document.getElementById('grid-container').appendChild(no).innerHTML = "查無資料";
+          }
         }
         // if there is the keyword
         else { 
-          document.getElementById("grid-container").innerHTML="";
+          if (document.getElementById('no')){
+            document.querySelectorAll('#no').forEach(i => i.remove());
+          }
+          else{
+            document.querySelectorAll('.site').forEach(i => i.remove());
+          }
           display(nextPage, data, keyword);
         }
       })
       .catch(err => console.log('Error: ' + err))
   }
   else{
+    if (document.getElementById('no')){
+      document.querySelectorAll('#no').forEach(i => i.remove());
+    }
+    else{
+      document.querySelectorAll('.site').forEach(i => i.remove());
+    }
     load()
   }
 }

@@ -7,6 +7,18 @@ body
   position: relative;
 }
 
+.theme{
+  font-family: "微軟正黑體", "Microsoft JhengHei", "Segoe UI Semibold", "Segoe UI", "Lucida Grande", Verdana, Arial, Helvetica, sans-serif;
+  text-align: left;
+  margin-left: 10px;
+  font-weight: bold;
+  font-size: 30px;
+  width: 150px;
+  height: 34px;
+  line-height: 34px;
+  color: #448899
+}
+
 #content {
   height: 100vh;
   overflow: scroll;
@@ -45,7 +57,7 @@ img {
   margin: 10px 0;
 }
   
-.page_name {
+.page-name {
   text-align: left;
   margin-left: 10px;
   font-weight: bold;
@@ -106,8 +118,6 @@ img {
   border-radius: 5px 0px 0px 5px;
   background: #FFFFFF;
   border: none;
-  border-top-left-radius: 5px;
-  border-bottom-left-radius: 5px;
   color: #757575;
   font-size: 16px;
   font-weight: bold;
@@ -306,3 +316,4 @@ img {
     margin-top: 15px;
   }
 }
+
