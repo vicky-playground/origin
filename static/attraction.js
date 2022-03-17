@@ -1,11 +1,5 @@
 // set the variable to get the value of id when calling onload=load(id) in the beginning
 let id = window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
-let rightArrow = document.getElementById('right-arrow');
-let leftArrow = document.getElementById('left-arrow');
-let am = document.getElementById('am');
-let pm = document.getElementById('pm');
-let amMark = document.getElementById('am-mark');
-let pmMark = document.getElementById('pm-mark');
 let imgId = 0;
 
 //load the page 
@@ -165,8 +159,15 @@ function displayPM() {
   document.querySelector('.price').innerHTML = ' 新台幣 2500 元';
 }
 
-
+let rightArrow = document.getElementById('right-arrow');
 rightArrow.addEventListener('click', NextImg);
+
+let leftArrow = document.getElementById('left-arrow');
 leftArrow.addEventListener('click', LastImg);
+
+let am = document.getElementById('am');
+let pm = document.getElementById('pm');
+let amMark = document.getElementById('am-mark');
+let pmMark = document.getElementById('pm-mark');
 am.addEventListener('click', displayAM);
 pm.addEventListener('click', displayPM);
