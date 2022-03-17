@@ -57,17 +57,6 @@ img {
   margin: 10px 0;
 }
   
-.page-name {
-  text-align: left;
-  margin-left: 10px;
-  font-weight: bold;
-  font-size: 30px;
-  width: 150px;
-  height: 34px;
-  line-height: 34px;
-  color: #448899;
-}
-  
 .btn-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -164,10 +153,10 @@ img {
 
   
 #name {
-    margin: 0px 10px 15px 10px;
-    padding-top: 12px;
-    color: #757575;
-    font-weight: bold;
+  margin: 0px 10px 15px 10px;
+  padding-top: 12px;
+  color: #757575;
+  font-weight: bold;
 }
   
 .info {
@@ -179,24 +168,24 @@ img {
 }
   
 #category {
-    text-align: end;
+  text-align: end;
 }
 
   
   
 #footer {
-    width: 100%;
-    font-weight: bold;
-    color: #FFFFFF;
-    text-align: center;
-    background: #757575;
-    line-height: 104px;
-    position: absolute;
-    margin-bottom: end;
+  width: 100%;
+  font-weight: bold;
+  color: #FFFFFF;
+  text-align: center;
+  background: #757575;
+  line-height: 104px;
+  position: absolute;
+  margin-bottom: end;
 }
   
  /* Media Query for Laptops and Desktops */
- @media (min-width: 1025px){
+ @media (min-width: 1200px){
   .nav {
       width: 1200px;
   }
@@ -240,7 +229,7 @@ img {
 }
   
 /* Media Query for Tablets Ipads portrait mode */
-@media (min-width: 481px) and (max-width: 1024px){
+@media (min-width: 481px) and (max-width: 1199px){
   .hero {
     width: 100vw;
     background-size: 55%;

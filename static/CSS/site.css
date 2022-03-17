@@ -1,0 +1,323 @@
+
+body
+{
+  margin: 0px;
+  padding: 0px;
+  font-size: 16px;
+  font-family: "微軟正黑體", "Microsoft JhengHei", "Segoe UI Semibold", "Segoe UI", "Lucida Grande", Verdana, Arial, Helvetica, sans-serif;
+  position: relative;
+  color: #666666;
+}
+
+* {
+  box-sizing: border-box;
+}
+  
+ 
+.nav-bar {
+  width: 100%;
+  background-color: #FFFFFF;
+  position: fixed;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  border-bottom: 1px solid #E8E8E8;
+}
+  
+.nav {
+  width: 100vw;
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  margin: 10px 0;
+}
+  
+.theme {
+  text-align: left;
+  margin-left: 10px;
+  font-weight: bold;
+  font-size: 30px;
+  width: 150px;
+  height: 34px;
+  line-height: 34px;
+  color: #448899;
+}
+  
+.btn-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  justify-self: end;
+  text-align: center;
+}
+  
+.btn {
+  line-height: 14px;
+  margin: 10px;
+  cursor: pointer;
+}
+  
+#img {
+  width: 100%;
+  height: 100%;
+  z-index:-1;
+}
+  
+.arrow {
+  position: relative;
+  width: 100%;
+  top: 50%;
+}
+  
+#left-arrow {
+  position: absolute;
+  left: 10px;
+  cursor: pointer;
+  top: 45%;
+  z-index: 1;
+  opacity:0.5;
+}
+  
+#right-arrow {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+  top: 45%;
+  z-index: 1;
+  opacity:0.5;
+}
+  
+.circle-sec {
+	position: absolute;
+	top: 27%;
+	width: 540px;
+	height: 26px;
+	display: flex;
+	justify-content:center ;
+}
+  
+.circle-black{
+	background-color: black !important;	
+}
+
+.circle-sec li{
+	z-index: 110;
+	border: solid 1px white;
+	background-color: white;
+	border-radius:60%;
+	width:12px;
+	height:12px;
+	margin:3px 3px 0px 3px;
+	display: inline-block;
+	list-style: none;  
+  text-align: center;
+}
+
+
+
+#name {
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 24px;
+  color: #666666;
+}
+  
+#info {
+  margin: 15px 0;
+  color: #666666;
+}
+  
+.form {
+  height: 300px;
+  background: #E8E8E8;
+  border-radius: 5px;
+  margin-top: 8px;
+  overflow: auto;
+}
+  
+.form-title {
+  font-weight: bold;
+  margin: 15px 20px;
+}
+  
+.info {
+  margin: 15px 20px;
+}
+  
+input[type='button'] {
+  font-size: 19px;
+  line-height: 16px;
+  color: #FFFFFF;
+  background: #448899;
+  border-radius: 5px;
+  border: 0;
+  width: 154px;
+  height: 36px;
+  margin: 10px 20px;
+  cursor: pointer;
+}
+  
+input[type='date'] {
+  height: 35px;
+  cursor: pointer;
+}
+  
+  
+.radio {
+  display: flex;
+  margin: 0 10px;
+}
+  
+.radio-input {
+  width: 22px;
+  height: 22px;
+  background-color: #FFFFFF;
+  border-radius: 50%;
+  cursor: pointer;
+  text-align: center;
+}
+  
+.mark {
+  width: 100%;
+  height: 100%;
+  border: 2px solid #FFFFFF;
+  background-color: #448899;
+  border-radius: 50%;
+}
+
+  
+#am .mark {
+  visibility: visible;
+}
+  
+#pm .mark {
+  visibility: hidden;
+}
+
+.radio-text {
+  cursor: pointer;
+  padding-left: 4px;
+  font-weight: normal;
+}
+
+.inline {
+  display: flex;
+  font-weight: bold;
+  margin: 15px 20px;
+  align-items: center;
+}
+  
+.price {
+  font-weight: normal;
+}
+  
+.lower-sec {
+  border-top: 1px solid #E8E8E8;
+  padding: 30px 10px 60px 10px;
+  margin: auto;
+  line-height: 23px;
+}
+  
+.lower-sec > div{
+  margin: 20px 10px;
+}
+  
+.subtitle {
+  margin: 20px 0 5px 0;
+  font-weight: bold;
+}
+  
+#footer {
+  width: 100%;
+  font-weight: bold;
+  color: #FFFFFF;
+  text-align: center;
+  background: #757575;
+  line-height: 104px;
+  position: absolute;
+  margin-bottom: end;
+}
+  
+/* Media Query for Laptops and Desktops */
+@media all and (min-width: 1200px) {
+  .nav {
+    width: 1200px;
+  }
+  
+  .upper-sec {
+    width: 1200px;
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    margin: 94px auto 40px auto;
+    padding: 0 15px;
+  }
+  
+  .image {
+    width: 540px;
+    height: 400px;
+  }
+    
+  .upper-right {
+    height: 400px;
+    margin: 0 0 0 30px;
+  }
+  
+  .form {
+    width: 600px;
+  }
+  
+  .lower-sec {
+      width: 1200px;
+  }
+}
+  
+/* Media Query for Tablets Ipads portrait mode */
+@media (min-width: 481px) and (max-width: 1199px){
+  .upper-sec {
+    width: 100vw;
+    display: flex;
+    margin: 94px auto 40px auto;
+    padding: 0 15px;
+  }
+  
+  .image {
+    width: 50vw;
+  }
+  
+  .upper-right {
+    width: 50vw;
+    padding: 0 0 0 15px;
+  }
+}
+  
+/* mobile: <= 600px, min 360px */
+@media (max-width: 480px) {
+  .upper-sec {
+    margin: 94px auto 20px auto;
+    display: block;
+    padding: 0;
+  }
+  
+  .image {
+    width: 100vw;
+    min-height: 75vw;
+  }
+  
+  .arrow {
+    align-items: center;
+  }
+  
+  .arrow > img {
+    z-index: 1;
+    top: 50%;
+  }
+  
+  .upper-right {
+    width: 100vw;
+    padding: 20px 10px;
+  }
+  
+  .form {
+    width: 100%;
+  }
+}
