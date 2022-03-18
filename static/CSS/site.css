@@ -86,20 +86,7 @@ body
   opacity:0.5;
 }
 
-.circle-sec{
-	position: absolute;
-	top: 36%;
-	width: 540px;
-	height: 26px;
-	display: flex;
-	justify-content:center ;
-}
-.circle{
-	z-index 1;
-	width: auto;
-	margin: 0px auto 0px auto;
-	
-}
+
   
 .circle-black{
 	background-color: black !important;	
@@ -273,6 +260,21 @@ input[type='date'] {
   .lower-sec {
       width: 1200px;
   }
+
+  .circle-sec{
+    position: absolute;
+    top: 36%;
+    width: 540px;
+    height: 100%;
+    display: flex;
+    justify-content:center ;
+  }
+  
+  .circle{
+    width: auto;
+    margin: 0px auto 0px auto;
+    
+  }
 }
   
 /* Media Query for Tablets Ipads portrait mode */
@@ -295,8 +297,8 @@ input[type='date'] {
 
   .circle-sec{
 		position: absolute;
-		top: 35%;
-		width: 47%;
+		top: 32%;
+		width: 50vw;
 		height: 100%;
 		display: flex;
 		justify-content:center;
@@ -341,8 +343,8 @@ input[type='date'] {
   .circle-sec{
 		position: absolute;
 		top: 38%;
-		width: 100%;
-		height: 26px;
+		width: 100vw;
+		height: 100%;
 		display: flex;
 		justify-content:center ;
 	}
