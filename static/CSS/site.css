@@ -60,6 +60,7 @@ body
   width: 100%;
   height: 100%;
   z-index:-1;
+  border-radius: 5px;
 }
   
 .arrow {
@@ -74,7 +75,7 @@ body
   cursor: pointer;
   top: 45%;
   z-index: 1;
-  opacity:0.5;
+  opacity:0.8;
 }
   
 #right-arrow {
@@ -83,13 +84,28 @@ body
   cursor: pointer;
   top: 45%;
   z-index: 1;
-  opacity:0.5;
+  opacity:0.8;
 }
 
-
+.circle-sec{
+  position: relative;
+  width: 100%;
+  top: 90%;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+}
   
 .circle-black{
 	background-color: black !important;	
+}
+
+#circle {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+  top: 85%;
+  z-index: 1;
 }
 
 .circle-sec li{
@@ -106,6 +122,7 @@ body
 }
 
 #name {
+  margin-top: 20px;
   font-weight: bold;
   font-size: 24px;
   line-height: 24px;
@@ -239,7 +256,7 @@ input[type='date'] {
     height: 400px;
     display: flex;
     justify-content: center;
-    margin: 94px auto 40px auto;
+    margin: 94px auto 70px auto;
     padding: 0 15px;
   }
   
@@ -261,14 +278,7 @@ input[type='date'] {
       width: 1200px;
   }
 
-  .circle-sec{
-    position: absolute;
-    top: 30vh;
-    width: 540px;
-    height: 100%;
-    display: flex;
-    justify-content:center ;
-  }
+ 
   
   .circle{
     width: auto;
@@ -295,14 +305,6 @@ input[type='date'] {
     padding: 0 0 0 15px;
   }
 
-  .circle-sec{
-		position: absolute;
-		top: 30vh;
-		width: 50vw;
-		height: 100%;
-		display: flex;
-		justify-content:center;
-	}
 	.circle{
 		position:absolute;
 		z-index: 1;
@@ -311,15 +313,33 @@ input[type='date'] {
   
 /* mobile: <= 600px, min 360px */
 @media (max-width: 480px) {
+
+  .nav {
+    width: 100%;
+		top: 0;
+  }
+
+  .btn-container {
+    display: flex;
+  }
+
   .upper-sec {
     margin: 94px auto 20px auto;
     display: block;
     padding: 0;
   }
+  .lower-sec {
+    display: block;
+    width: 480px;
+    padding: 0;
+  }
+
   
-  .image {
-    width: 100vw;
-    min-height: 75vw;
+  #image {
+  width: 480px;
+  height: 350px;
+  left: -53px;
+  top: 0px;
   }
   
   .arrow {
@@ -332,7 +352,7 @@ input[type='date'] {
   }
   
   .upper-right {
-    width: 100vw;
+    width: 480px;
     padding: 20px 10px;
   }
   
@@ -340,16 +360,13 @@ input[type='date'] {
     width: 100%;
   }
 
-  .circle-sec{
-		position: absolute;
-		top: 90vh;
-		width: 100vw;
-		height: 100%;
-		display: flex;
-		justify-content:center ;
-	}
 	.circle{
+    position:absolute;
 		z-index: 1;
 	}
+
+  #footer{
+    width:480px;
+  }
 	
 }
