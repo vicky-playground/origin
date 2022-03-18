@@ -50,7 +50,6 @@ sql = "INSERT IGNORE INTO TPtrip (info, stitle , longitude, latitude, MRT, CAT2,
 for k in range(len(dataList)):
     image =  ["https" + e for e in dataList[k]["file"].split("https") if e]
     # conenct the pool
-    pool.init()
     conn = pool.get_conn()
     cursor = conn.cursor()
 	# filter out URLs which are not ended with jpg or png
@@ -87,7 +86,6 @@ def attractionAPI():
     page = int(float(request.args.get("page")))
     if keyword != None and keyword != "":
         # conenct the pool
-        pool.init()
         conn = pool.get_conn()
         cursor = conn.cursor()
 
@@ -150,7 +148,6 @@ def attractionAPI():
 def attractionIdApi(attractionId):
     try:
         # conenct the pool
-        pool.init()
         conn = pool.get_conn()
         cursor = conn.cursor()
 	    # API parameter: page & keyword
@@ -173,3 +170,4 @@ if __name__=="__main__":
 	app.run(host='0.0.0.0',port=3000, use_reloader=False)
 
 
+conn.close()
