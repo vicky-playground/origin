@@ -67,7 +67,7 @@ function display(res) {
   document.getElementById('transport').innerHTML = transport;
 
   // render circles
-  cir = document.querySelector('.circle-sec')
+  cir = document.querySelector('.circle')
   for (let i = 0; i < res["images"].length; i++) {
     let li = document.createElement('li');
 		cir.appendChild(li) ;

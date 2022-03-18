@@ -85,14 +85,20 @@ body
   z-index: 1;
   opacity:0.5;
 }
-  
-.circle-sec {
+
+.circle-sec{
 	position: absolute;
-	top: 27%;
+	top: 36%;
 	width: 540px;
 	height: 26px;
 	display: flex;
 	justify-content:center ;
+}
+.circle{
+	z-index 1;
+	width: auto;
+	margin: 0px auto 0px auto;
+	
 }
   
 .circle-black{
@@ -100,7 +106,7 @@ body
 }
 
 .circle-sec li{
-	z-index: 110;
+	z-index: 2;
 	border: solid 1px white;
 	background-color: white;
 	border-radius:60%;
@@ -111,8 +117,6 @@ body
 	list-style: none;  
   text-align: center;
 }
-
-
 
 #name {
   font-weight: bold;
@@ -288,6 +292,19 @@ input[type='date'] {
     width: 50vw;
     padding: 0 0 0 15px;
   }
+
+  .circle-sec{
+		position: absolute;
+		top: 35%;
+		width: 47%;
+		height: 100%;
+		display: flex;
+		justify-content:center;
+	}
+	.circle{
+		position:absolute;
+		z-index: 1;
+	}
 }
   
 /* mobile: <= 600px, min 360px */
@@ -320,4 +337,17 @@ input[type='date'] {
   .form {
     width: 100%;
   }
+
+  .circle-sec{
+		position: absolute;
+		top: 38%;
+		width: 100%;
+		height: 26px;
+		display: flex;
+		justify-content:center ;
+	}
+	.circle{
+		z-index: 1;
+	}
+	
 }

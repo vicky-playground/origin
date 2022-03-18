@@ -115,7 +115,6 @@ def attractionAPI():
         if page == None:
             page = 0
         # conenct the pool
-        pool.init()
         conn = pool.get_conn()
         cursor = conn.cursor()
 
