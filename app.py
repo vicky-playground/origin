@@ -17,7 +17,7 @@ from collections import OrderedDict
 pool = Pool(host = "127.0.0.1", user = "root", password="12345678", database='website', port= 3306)
 pool.init()
 
-"""
+
 # conenct the pool
 conn = pool.get_conn()
 cursor = conn.cursor()
@@ -65,7 +65,7 @@ for k in range(len(dataList)):
     # release the connection back to the pool for reuse
     pool.release(conn)
     cursor.close()
-"""
+
 
 # Pages
 @app.route("/")
@@ -170,6 +170,5 @@ def attractionIdApi(attractionId):
 
 if __name__=="__main__":
 	app.run(host='0.0.0.0',port=3000, use_reloader=False)
-
 
 conn.close()
