@@ -220,7 +220,6 @@ img {
     border: 1px solid #E8E8E8;
     box-sizing: border-box;
     border-radius: 5px;
-    margin: 15px auto;
   }
 
   .site > img {
@@ -255,7 +254,6 @@ img {
     border: 1px solid #E8E8E8;
     box-sizing: border-box;
     border-radius: 5px;
-    margin: 15px auto;
   }
   
   .site > img {
@@ -263,7 +261,7 @@ img {
   }
 }
   
-/* mobile: <= 600px, min 360px */
+/* mobile: <= 480px, min 360px */
 @media (max-width: 480px) {
   .hero-block {
     height: 280px;
@@ -293,14 +291,15 @@ img {
   }
   
   .site {
-    margin-top: 15px;
-    margin-bottom: 0;
+    width: 95%;
+    border: 1px solid #E8E8E8;
+    box-sizing: border-box;
+    border-radius: 5px;
   }
-
+  
   .site > img {
     height: 60vw;
   }
-  
   #footer {
     margin-top: 15px;
   }
