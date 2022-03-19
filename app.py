@@ -20,6 +20,7 @@ pool.init()
 conn = pool.get_conn()
 cursor = conn.cursor()
 
+"""
 # create a table in the database
 sql="CREATE TABLE IF NOT EXISTS TPtrip (id INT AUTO_INCREMENT, info VARCHAR(255), stitle VARCHAR(10) UNIQUE, longitude VARCHAR(10), latitude VARCHAR(10), MRT VARCHAR(10), CAT2 VARCHAR(10), MEMO_TIME LONGTEXT, file LONGTEXT, xbody LONGTEXT, address VARCHAR(255), PRIMARY KEY (id))"
 cursor.execute(sql)
@@ -27,8 +28,7 @@ cursor.execute(sql)
 pool.release(conn)
 cursor.close()
 
-# conenct the pool
-conn = pool.get_conn()
+
 cursor = conn.cursor()
 
 sql = "ALTER TABLE TPtrip AUTO_INCREMENT=1"
@@ -36,6 +36,7 @@ cursor.execute(sql)
 # release the connection back to the pool for reuse
 pool.release(conn)
 cursor.close()
+
 
 # import the JSON file
 with open('data/taipei-attractions.json', 'r') as f:   	
@@ -62,7 +63,7 @@ for k in range(len(dataList)):
     # release the connection back to the pool for reuse
     pool.release(conn)
     cursor.close()
-
+"""
 
 # Pages
 @app.route("/")
