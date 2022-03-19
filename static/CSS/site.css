@@ -266,8 +266,7 @@ input[type='date'] {
     margin: 94px auto 70px auto;
     padding: 0 15px;
   }
-  
-  
+
   .upper-right {
     height: 400px;
     margin: 0 0 0 30px;
@@ -314,6 +313,10 @@ input[type='date'] {
 /* mobile: <= 600px, min 360px */
 @media (max-width: 480px) {
 
+  .nav-bar{
+    width: 100vw;
+  }
+
   .nav {
     width: 100%;
 		top: 0;
@@ -325,18 +328,35 @@ input[type='date'] {
 
   .upper-sec {
     margin: 94px auto 20px auto;
-    display: block;
+    
     padding: 0;
+    overflow: hidden;
+    display: block;
+    position: relative;
+  }
+
+  #image{
+    max-width: 100%;
+  }
+
+  .form{
+    width: 100vw;
+    height: auto;
   }
   .lower-sec {
     display: block;
-    width: 480px;
-    padding: 0;
+    width: 100vw;
+    padding-top: 15px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin: 10px;
   }
-
   
+  #transport{
+    margin-right: 15px;
+  }
   #image {
-  width: 480px;
+  width: 466px;
   height: 350px;
   left: -53px;
   top: 0px;
@@ -345,28 +365,27 @@ input[type='date'] {
   .arrow {
     align-items: center;
   }
+
   
-  .arrow > img {
-    z-index: 1;
-    top: 50%;
-  }
+
   
   .upper-right {
-    width: 480px;
-    padding: 20px 10px;
+    width: 100vw;
+    padding: 5px 10px;
   }
   
   .form {
     width: 100%;
   }
 
+  
 	.circle{
     position:absolute;
 		z-index: 1;
 	}
 
   #footer{
-    width:480px;
+    width:100vw;
   }
 	
 }
