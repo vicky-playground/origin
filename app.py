@@ -17,7 +17,7 @@ from collections import OrderedDict
 pool = Pool(host = "127.0.0.1", user = "root", password="12345678", database='website', port= 3306)
 pool.init()
 
-
+"""
 # conenct the pool
 conn = pool.get_conn()
 cursor = conn.cursor()
@@ -66,6 +66,7 @@ for k in range(len(dataList)):
     pool.release(conn)
     cursor.close()
 
+"""
 
 # Pages
 @app.route("/")
@@ -87,6 +88,7 @@ def attractionAPI():
 	# API parameter: page & keyword
     keyword = request.args.get('keyword')
     page = int(float(request.args.get("page")))
+    # if there is a keyword
     if keyword != None and keyword != "":
         # conenct the pool
         conn = pool.get_conn()
@@ -114,6 +116,7 @@ def attractionAPI():
             else:
                 return jsonify({"nextPage": page+1, 'data' : finalResult})        
         return jsonify({"error":True, "message": "No relevant data"})
+    # if there is no input of keyword
     else:
         if page == None:
             page = 0
@@ -121,7 +124,7 @@ def attractionAPI():
         conn = pool.get_conn()
         cursor = conn.cursor()
 
-        cursor.execute("SELECT id,stitle,CAT2,xbody,address,info,MRT,latitude,longitude,file FROM website.TPtrip WHERE id>=%s AND id<=%s",((page+1)*12-11,(page+1)*12))
+        cursor.execute("SELECT id,stitle,CAT2,xbody,address,info,MRT,latitude,longitude,file FROM website.TPtrip LIMIT %s, %s",((page+1)*12-11,(page+1)*12))
         result = cursor.fetchall()
         # release the connection back to the pool for reuse
         pool.release(conn)
@@ -171,4 +174,4 @@ def attractionIdApi(attractionId):
 if __name__=="__main__":
 	app.run(host='0.0.0.0',port=3000, use_reloader=False)
 
-conn.close()
+#conn.close()

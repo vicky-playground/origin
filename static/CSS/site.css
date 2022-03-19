@@ -63,6 +63,12 @@ body
   z-index:-1;
   border-radius: 5px;
 }
+
+#image {
+  width: 540px;
+  height: 406px;
+}
+  
   
 .arrow {
   position: relative;
@@ -261,11 +267,7 @@ input[type='date'] {
     padding: 0 15px;
   }
   
-  .image {
-    width: 540px;
-    height: 400px;
-  }
-    
+  
   .upper-right {
     height: 400px;
     margin: 0 0 0 30px;
@@ -297,9 +299,6 @@ input[type='date'] {
     padding: 0 15px;
   }
   
-  .image {
-    width: 50vw;
-  }
   
   .upper-right {
     width: 50vw;
