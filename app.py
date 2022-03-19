@@ -16,11 +16,12 @@ from collections import OrderedDict
 # connect to the local DB
 pool = Pool(host = "127.0.0.1", user = "root", password="12345678", database='website', port= 3306)
 pool.init()
+
+"""
 # conenct the pool
 conn = pool.get_conn()
 cursor = conn.cursor()
 
-"""
 # create a table in the database
 sql="CREATE TABLE IF NOT EXISTS TPtrip (id INT AUTO_INCREMENT, info VARCHAR(255), stitle VARCHAR(10) UNIQUE, longitude VARCHAR(10), latitude VARCHAR(10), MRT VARCHAR(10), CAT2 VARCHAR(10), MEMO_TIME LONGTEXT, file LONGTEXT, xbody LONGTEXT, address VARCHAR(255), PRIMARY KEY (id))"
 cursor.execute(sql)
@@ -28,7 +29,8 @@ cursor.execute(sql)
 pool.release(conn)
 cursor.close()
 
-
+# conenct the pool
+conn = pool.get_conn()
 cursor = conn.cursor()
 
 sql = "ALTER TABLE TPtrip AUTO_INCREMENT=1"
