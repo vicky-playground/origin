@@ -290,7 +290,7 @@ input[type='date'] {
 }
   
 /* Media Query for Tablets Ipads portrait mode */
-@media (min-width: 481px) and (max-width: 1199px){
+@media (min-width: 601px) and (max-width: 1199px){
   .upper-sec {
     width: 100vw;
     display: flex;
@@ -321,7 +321,7 @@ input[type='date'] {
 }
   
 /* mobile: <= 600px, min 360px */
-@media (max-width: 480px) {
+@media (max-width: 600px) {
 
   .nav-bar{
     width: 100vw;
