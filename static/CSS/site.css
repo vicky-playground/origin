@@ -316,14 +316,21 @@ input[type='date'] {
   }
 
   .circle-sec {
-    top: 69%;
+    top: 68%;
   }
 }
 
 /* Media Query for Tablets Ipads portrait mode */
 @media (min-width: 800px) and (max-width: 1199px){
   .circle-sec {
-    top: 83%;
+    top: 82%;
+  }
+}
+
+/* Media Query for Tablets Ipads portrait mode */
+@media (min-width: 700px) and (max-width: 799px){
+  .circle-sec {
+    top: 77%;
   }
 }
   
