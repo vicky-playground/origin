@@ -305,3 +305,105 @@ img {
   }
 }
 
+
+/* The modal - hidden by default */
+.modal-bottom {
+  display: none;
+  position: fixed;
+  background: rgba(0, 0, 0, 0.25); /* Black w/ opacity */
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+}
+
+#login {
+  display: none;
+}
+
+#signup {
+  display: none;
+}
+
+.modal {
+  color: #666666;
+  background: #FFFFFF;
+  box-shadow: 0px 4px 60px #AAAAAA;
+  border-radius: 6px;
+  width: 340px;
+  margin: 80px auto auto auto;
+}
+
+.deco {
+  width: 100%;
+  height: 10px;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  background: linear-gradient(270deg, #337788 0%, #66AABB 100%);
+}
+
+.modal-content {
+  position: relative;
+  margin: 15px;
+}
+
+/* The Close Button */
+.close {
+  position: absolute;
+  top: 7px;
+  right: 0;
+  cursor: pointer;
+  width: 16px;
+  height: auto;
+}
+
+.form-title {
+  font-weight: bold;
+  font-size: 24px;
+  text-align: center;
+  margin: 10px 0 15px 0;
+}
+
+.form > .input {
+  width: 310px;
+  height: 47px;
+  border: 1px solid #CCCCCC;
+  box-sizing: border-box;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.form > input[type='text'], input[type='password'] {
+  padding: 15px;
+  color: #666666;
+  font-size: 16px;
+}
+
+input[type='submit'] {
+  width: 310px;
+  height: 47px;
+  background: #448899;
+  color: #FFFFFF;
+  border: 0;
+  cursor: pointer;
+  border-radius: 5px;
+  box-sizing: content-box;
+  font-weight: normal;
+  font-size: 19px;
+  line-height: 16px;
+  color: #FFFFFF;
+  padding: 0;
+}
+
+.error {
+  color: red;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.switch {
+  box-sizing: border-box;
+  text-align: center;
+  box-sizing: border-box;
+  padding: 10px 0 15px 0;
+  cursor: pointer;
+}

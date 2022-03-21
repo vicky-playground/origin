@@ -107,7 +107,7 @@ body
 	background-color: black !important;	
 }
 
-#circle {
+.circle {
   position: absolute;
   right: 10px;
   cursor: pointer;
@@ -123,7 +123,7 @@ body
 	width:12px;
 	height:12px;
 	margin:3px 3px 0px 3px;
-	display: inline-block;
+	display: inline-block; /* put circles side by side*/
 	list-style: none;  
   text-align: center;
 }
