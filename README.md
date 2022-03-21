@@ -6,3 +6,5 @@
 
 
 ### Wireframe: https://www.figma.com/file/CeFwqBSbNWZbWz2ih4YS6z/Taipei-Trip-%E5%8F%B0%E5%8C%97%E4%B8%80%E6%97%A5%E9%81%8A?node-id=34%3A277
+
+### API: https://app.swaggerhub.com/apis-docs/padax/taipei-trip/1.0.0
