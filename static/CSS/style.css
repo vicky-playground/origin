@@ -7,6 +7,18 @@ body
   position: relative;
 }
 
+.theme{
+  font-family: "微軟正黑體", "Microsoft JhengHei", "Segoe UI Semibold", "Segoe UI", "Lucida Grande", Verdana, Arial, Helvetica, sans-serif;
+  text-align: left;
+  margin-left: 10px;
+  font-weight: bold;
+  font-size: 30px;
+  width: 150px;
+  height: 34px;
+  line-height: 34px;
+  color: #448899
+}
+
 #content {
   height: 100vh;
   overflow: scroll;
@@ -43,17 +55,6 @@ img {
   display: grid;
   grid-template-columns: 0.9fr 1.1fr;
   margin: 10px 0;
-}
-  
-.page_name {
-  text-align: left;
-  margin-left: 10px;
-  font-weight: bold;
-  font-size: 30px;
-  width: 150px;
-  height: 34px;
-  line-height: 34px;
-  color: #448899;
 }
   
 .btn-container {
@@ -106,8 +107,6 @@ img {
   border-radius: 5px 0px 0px 5px;
   background: #FFFFFF;
   border: none;
-  border-top-left-radius: 5px;
-  border-bottom-left-radius: 5px;
   color: #757575;
   font-size: 16px;
   font-weight: bold;
@@ -154,10 +153,10 @@ img {
 
   
 #name {
-    margin: 0px 10px 15px 10px;
-    padding-top: 12px;
-    color: #757575;
-    font-weight: bold;
+  margin: 0px 10px 15px 10px;
+  padding-top: 12px;
+  color: #757575;
+  font-weight: bold;
 }
   
 .info {
@@ -169,24 +168,24 @@ img {
 }
   
 #category {
-    text-align: end;
+  text-align: end;
 }
 
   
   
 #footer {
-    width: 100%;
-    font-weight: bold;
-    color: #FFFFFF;
-    text-align: center;
-    background: #757575;
-    line-height: 104px;
-    position: absolute;
-    margin-bottom: end;
+  width: 100%;
+  font-weight: bold;
+  color: #FFFFFF;
+  text-align: center;
+  background: #757575;
+  line-height: 104px;
+  position: absolute;
+  margin-bottom: end;
 }
   
  /* Media Query for Laptops and Desktops */
- @media (min-width: 1025px){
+ @media (min-width: 1200px){
   .nav {
       width: 1200px;
   }
@@ -221,7 +220,6 @@ img {
     border: 1px solid #E8E8E8;
     box-sizing: border-box;
     border-radius: 5px;
-    margin: 15px auto;
   }
 
   .site > img {
@@ -230,7 +228,7 @@ img {
 }
   
 /* Media Query for Tablets Ipads portrait mode */
-@media (min-width: 481px) and (max-width: 1024px){
+@media (min-width: 481px) and (max-width: 1199px){
   .hero {
     width: 100vw;
     background-size: 55%;
@@ -256,7 +254,6 @@ img {
     border: 1px solid #E8E8E8;
     box-sizing: border-box;
     border-radius: 5px;
-    margin: 15px auto;
   }
   
   .site > img {
@@ -264,7 +261,7 @@ img {
   }
 }
   
-/* mobile: <= 600px, min 360px */
+/* mobile: <= 480px, min 360px */
 @media (max-width: 480px) {
   .hero-block {
     height: 280px;
@@ -294,15 +291,119 @@ img {
   }
   
   .site {
-    margin-top: 15px;
-    margin-bottom: 0;
+    width: 95%;
+    border: 1px solid #E8E8E8;
+    box-sizing: border-box;
+    border-radius: 5px;
   }
-
+  
   .site > img {
     height: 60vw;
   }
-  
   #footer {
     margin-top: 15px;
   }
+}
+
+
+/* The modal - hidden by default */
+.modal-bottom {
+  display: none;
+  position: fixed;
+  background: rgba(0, 0, 0, 0.25); /* Black w/ opacity */
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+}
+
+#login {
+  display: none;
+}
+
+#signup {
+  display: none;
+}
+
+.modal {
+  color: #666666;
+  background: #FFFFFF;
+  box-shadow: 0px 4px 60px #AAAAAA;
+  border-radius: 6px;
+  width: 340px;
+  margin: 80px auto auto auto;
+}
+
+.deco {
+  width: 100%;
+  height: 10px;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  background: linear-gradient(270deg, #337788 0%, #66AABB 100%);
+}
+
+.modal-content {
+  position: relative;
+  margin: 15px;
+}
+
+/* The Close Button */
+.close {
+  position: absolute;
+  top: 7px;
+  right: 0;
+  cursor: pointer;
+  width: 16px;
+  height: auto;
+}
+
+.form-title {
+  font-weight: bold;
+  font-size: 24px;
+  text-align: center;
+  margin: 10px 0 15px 0;
+}
+
+.form > .input {
+  width: 310px;
+  height: 47px;
+  border: 1px solid #CCCCCC;
+  box-sizing: border-box;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.form > input[type='text'], input[type='password'] {
+  padding: 15px;
+  color: #666666;
+  font-size: 16px;
+}
+
+input[type='submit'] {
+  width: 310px;
+  height: 47px;
+  background: #448899;
+  color: #FFFFFF;
+  border: 0;
+  cursor: pointer;
+  border-radius: 5px;
+  box-sizing: content-box;
+  font-weight: normal;
+  font-size: 19px;
+  line-height: 16px;
+  color: #FFFFFF;
+  padding: 0;
+}
+
+.error {
+  color: red;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.switch {
+  box-sizing: border-box;
+  text-align: center;
+  box-sizing: border-box;
+  padding: 10px 0 15px 0;
+  cursor: pointer;
 }
