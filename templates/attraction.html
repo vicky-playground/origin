@@ -15,7 +15,7 @@
           <a class='theme' href="{{ url_for('index') }}">台北一日遊 </a>
           <div class='btn-container'>
             <div class='btn'>預定行程</div>
-            <div class='btn'>登入/註冊</div>
+            <div class='btn' onclick="openForm()">登入/註冊</div>
           </div>
         </div>
       </div>
@@ -77,6 +77,38 @@
             </div>
         </div>
       </div>
+           <!-- The Modal -->
+           <div class='modal-bottom' id="login">
+            <div class='modal'>
+              <div class='deco'></div>
+              <div class='modal-content'>
+                <img class='close' src='../static/IMG/dialog.png' onclick="closeForm()">
+                <form class='form2' id='form-login' action="{{ url_for('login') }}" method="get">
+                  <div class='form-title' id="login-acc">登入會員帳號</div>
+                  <input type='text' class='input' name='email' placeholder='輸入電子信箱' value="" required>
+                  <input type='password' class='input' name='password' placeholder='輸入密碼' value="" required><br>
+                  <input type="submit" value='登入帳戶' class='submit'>
+                  <div class='error'></div>
+                  <div class='switch'>還沒有帳戶？點此註冊</div>
+                </form>
+              </div>
+            </div>
+            <div class='modal' id='signup'>
+              <div class='deco'></div>
+              <div class='modal-content'>
+                <img class='close' src='../static/IMG/dialog.png'>
+                <form class='form2' id='form-login' action="{{ url_for('login') }}" method="post">
+                  <div class='form-title' id="login-acc">註冊會員帳號</div>
+                  <input type='text' class='input' name='name' placeholder='輸入姓名' value="" required>
+                  <input type='text' class='input' name='email' placeholder='輸入電子信箱' value="" required>
+                  <input type='password' class='input' name='password' placeholder='輸入密碼' value="" required><br>
+                  <input type='submit' value='註冊新帳戶' class='submit'>
+                  <div class='error'></div>
+                  <div class='switch'>已經有帳戶了？點此登入</div>
+                </form>
+              </div>
+            </div>
+          </div>
       <footer id='footer'>COPYRIGHT © 2021 台北一日遊</footer>
 </body>
 </html>

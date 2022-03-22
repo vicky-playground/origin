@@ -41,8 +41,9 @@
         <div class='modal'>
           <div class='deco'></div>
           <div class='modal-content'>
-            <img class='close' src='../static/IMG/dialog.png'>
-            <form class='form' action="{{ url_for('login') }}" method="get">
+            <img class='close' src='../static/IMG/dialog.png' onclick="closeForm()">
+            {% block content %}
+            <form class='form' action="{{ url_for('login')}}" method="get">
               <div class='form-title'>登入會員帳號</div>
               <input type='text' class='input' name='email' placeholder='輸入電子信箱' value="" required>
               <input type='password' class='input' name='password' placeholder='輸入密碼' value="" required><br>
@@ -50,6 +51,7 @@
               <div class='error'></div>
               <div class='switch'>還沒有帳戶？點此註冊</div>
             </form>
+            {% endblock %}
           </div>
         </div>
         <div class='modal' id='signup'>

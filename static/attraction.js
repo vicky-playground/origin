@@ -171,3 +171,11 @@ let amMark = document.getElementById('am-mark');
 let pmMark = document.getElementById('pm-mark');
 am.addEventListener('click', displayAM);
 pm.addEventListener('click', displayPM);
+
+function openForm() {
+  document.getElementById("login").style.display = "block";
+}
+
+function closeForm() {
+  document.getElementById("login").style.display = "none";
+}
