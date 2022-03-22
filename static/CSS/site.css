@@ -108,8 +108,8 @@ body
 }
 
 .circle {
+  
   position: absolute;
-  right: 10px;
   cursor: pointer;
   top: 85%;
   z-index: 1;
