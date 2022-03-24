@@ -23,7 +23,7 @@ app.config['JSON_SORT_KEYS'] = False
 pool = Pool(host = "127.0.0.1", user = "root", password="12345678", database='website', port= 3306)
 pool.init()
 
-"""
+
 # conenct the pool
 conn = pool.get_conn()
 cursor = conn.cursor()
@@ -72,7 +72,7 @@ for k in range(len(dataList)):
     pool.release(conn)
     cursor.close()
 
-"""
+
 
 # Pages
 @app.route("/")
