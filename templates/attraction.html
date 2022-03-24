@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="zh-tw" dir="ltr">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='CSS/site.css') }}">
-    <script type="text/javascript" src="../static/attraction.js" defer></script>
-    <title>Taipei Attractions Details</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='CSS/site.css') }}">
+  <script type="text/javascript" src="../static/attraction.js" defer></script>
+  <script type="text/javascript" src="../static/member" defer></script>
+  <title>Taipei Attractions Details</title>
 </head>
 
 <body onload="load(id)">
@@ -15,7 +16,8 @@
           <a class='theme' href="{{ url_for('index') }}">台北一日遊 </a>
           <div class='btn-container'>
             <div class='btn'>預定行程</div>
-            <div class='btn'>登入/註冊</div>
+            <div class='btn' id='login-btn' onclick="openLoginForm()">登入/註冊</div>
+            <div class='btn' id='logout-btn' onclick="logout()">登出系統</div>
           </div>
         </div>
       </div>
@@ -77,7 +79,41 @@
             </div>
         </div>
       </div>
-      <footer id='footer'>COPYRIGHT © 2021 台北一日遊</footer>
+      <!-- The Modal -->
+      <div class='modal-bottom' id='login-form'>
+        <div class='modal'>
+          <div class='deco'></div>
+          <div class='modal-content'>
+            <img class='close' src='../static/IMG/dialog.png' onclick="closeForm()">
+            <form class='form-member' action="/api/user" method="post" name="login-form">
+              <div class='form-title'>登入會員帳號</div>
+              <input type='text' class='input' name="email" placeholder='輸入電子信箱' id='login-email' value="" required>
+              <input type='password' class='input' name='password' placeholder='輸入密碼' id='login-password' value="" required><br>
+              <input type="submit" value='登入帳戶' class='submit' id='login-submit'>
+              <div class='error' id="login-msg"></div>
+              <div class='switch' onclick="switchForm()">還沒有帳戶？點此註冊</div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class='modal-bottom' id='signup-form'>
+        <div class='modal'>
+          <div class='deco'></div>
+          <div class='modal-content'>
+            <img class='close' src='../static/IMG/dialog.png' onclick="closeForm()">
+            <form class='form-member' action="/api/user"  name="signup-form">
+              <div class='form-title'>註冊會員帳號</div>
+              <input type='text' class='input' name='name' placeholder='輸入姓名' id='signup-name' value="" required>
+              <input type='text' class='input' name='email' placeholder='輸入電子信箱' id='signup-email' value="" required>
+              <input type='password' class='input' name='password' placeholder='輸入密碼' id='signup-password' value="" required><br>
+              <input type='submit' value='註冊新帳戶' class='submit' id='signup-submit'>
+              <div class='error' id="signup-msg"></div>
+              <div class='switch' onclick="switchForm()">已經有帳戶了？點此登入</div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <footer id='footer'>COPYRIGHT © 2022 台北一日遊</footer>
 </body>
 </html>
        

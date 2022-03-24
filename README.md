@@ -1,4 +1,5 @@
 # WeHelp Phase 2
+
 ## EC2: http://54.169.87.139:3000/ ; http://54.169.87.139:3000/attraction/10
 
 ### Wireframe: https://www.figma.com/file/CeFwqBSbNWZbWz2ih4YS6z/Taipei-Trip-%E5%8F%B0%E5%8C%97%E4%B8%80%E6%97%A5%E9%81%8A?node-id=34%3A277
@@ -9,4 +10,3 @@
 ![Mar-20-2022 17-49-01](https://user-images.githubusercontent.com/90204593/159156869-d7c7a270-80a4-431c-976e-dca00cfd65be.gif)<br/>
 #### membership system & design:<br/>
 ![Mar-25-2022 02-42-14](https://user-images.githubusercontent.com/90204593/159988009-fef3ba91-fce1-4fc3-b08a-4fcef55eb54e.gif)
-

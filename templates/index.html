@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='CSS/style.css') }}">
-    <script type="text/javascript" src="../static/index.js" defer></script>
-    <title>Taipei Attractions</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='CSS/style.css') }}">
+  <script type="text/javascript" src="../static/index.js" defer></script>
+  <script type="text/javascript" src="../static/member" defer></script>
+  <title>Taipei Attractions</title>
 </head>
 <body onload="load()">
     <div class='nav-bar'>
@@ -14,7 +15,8 @@
           <div class='theme'>台北一日遊</div>
           <div class='btn-container'>
             <div class='btn'>預定行程</div>
-            <div class='btn' onclick="openForm()">登入/註冊</div>
+            <div class='btn' id='login-btn' onclick="openLoginForm()">登入/註冊</div>
+            <div class='btn' id='logout-btn' onclick="logout()">登出系統</div>
           </div>
         </div>
       </div>
@@ -37,37 +39,39 @@
         </div>
       </div>
       <!-- The Modal -->
-      <div class='modal-bottom' id="login">
+      <div class='modal-bottom' id='login-form'>
         <div class='modal'>
           <div class='deco'></div>
           <div class='modal-content'>
-            <img class='close' src='../static/IMG/dialog.png'>
-            <form class='form' action="{{ url_for('login') }}" method="get">
+            <img class='close' src='../static/IMG/dialog.png' onclick="closeForm()">
+            <form class='form' action="/api/user" method="post" name="login-form">
               <div class='form-title'>登入會員帳號</div>
-              <input type='text' class='input' name='email' placeholder='輸入電子信箱' value="" required>
-              <input type='password' class='input' name='password' placeholder='輸入密碼' value="" required><br>
-              <input type="submit" value='登入帳戶' class='submit'>
-              <div class='error'></div>
-              <div class='switch'>還沒有帳戶？點此註冊</div>
-            </form>
-          </div>
-        </div>
-        <div class='modal' id='signup'>
-          <div class='deco'></div>
-          <div class='modal-content'>
-            <img class='close' src='../static/IMG/dialog.png'>
-            <form class='form' action="{{ url_for('login') }}" method="post">
-              <div class='form-title'>註冊會員帳號</div>
-              <input type='text' class='input' name='name' placeholder='輸入姓名' value="" required>
-              <input type='text' class='input' name='email' placeholder='輸入電子信箱' value="" required>
-              <input type='password' class='input' name='password' placeholder='輸入密碼' value="" required><br>
-              <input type='submit' value='註冊新帳戶' class='submit'>
-              <div class='error'></div>
-              <div class='switch'>已經有帳戶了？點此登入</div>
+              <input type='text' class='input' name="email" placeholder='輸入電子信箱' id='login-email' value="" required>
+              <input type='password' class='input' name='password' placeholder='輸入密碼' id='login-password' value="" required><br>
+              <input type="submit" value='登入帳戶' class='submit' id='login-submit'>
+              <div class='error' id="login-msg"></div>
+              <div class='switch' onclick="switchForm()">還沒有帳戶？點此註冊</div>
             </form>
           </div>
         </div>
       </div>
-      <footer id='footer'>COPYRIGHT © 2021 台北一日遊</footer>
+      <div class='modal-bottom' id='signup-form'>
+        <div class='modal'>
+          <div class='deco'></div>
+          <div class='modal-content'>
+            <img class='close' src='../static/IMG/dialog.png' onclick="closeForm()">
+            <form class='form' action="/api/user"  name="signup-form">
+              <div class='form-title'>註冊會員帳號</div>
+              <input type='text' class='input' name='name' placeholder='輸入姓名' id='signup-name' value="" required>
+              <input type='text' class='input' name='email' placeholder='輸入電子信箱' id='signup-email' value="" required>
+              <input type='password' class='input' name='password' placeholder='輸入密碼' id='signup-password' value="" required><br>
+              <input type='submit' value='註冊新帳戶' class='submit' id='signup-submit'>
+              <div class='error' id="signup-msg"></div>
+              <div class='switch' onclick="switchForm()">已經有帳戶了？點此登入</div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <footer id='footer'>COPYRIGHT © 2022 台北一日遊</footer>
 </body>
 </html>
