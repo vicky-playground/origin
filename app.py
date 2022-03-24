@@ -1,10 +1,5 @@
-import string
 from flask import *
 from numpy import integer
-app=Flask(__name__, template_folder="templates")
-app.config["JSON_AS_ASCII"]=False
-app.config["TEMPLATES_AUTO_RELOAD"]=True
-app.config['JSON_SORT_KEYS'] = False
 import json
 import pymysql
 import pymysql.cursors
@@ -12,6 +7,17 @@ from pymysqlpool.pool import Pool
 import ast
 pymysql.install_as_MySQLdb()
 from collections import OrderedDict
+import os
+from urllib import response
+import sys, traceback
+from flask_jwt_extended import *
+
+app=Flask(__name__, template_folder="templates")
+app.secret_key = os.urandom(24)
+app.config["JSON_AS_ASCII"]=False
+app.config["TEMPLATES_AUTO_RELOAD"]=True
+app.config['JSON_SORT_KEYS'] = False
+
 
 # connect to the local DB
 pool = Pool(host = "127.0.0.1", user = "root", password="12345678", database='website', port= 3306)
@@ -120,10 +126,8 @@ def attractionAPI():
     else:
         if page == None:
             page = 0
-        # conenct the pool
         conn = pool.get_conn()
         cursor = conn.cursor()
-
         cursor.execute("SELECT id,stitle,CAT2,xbody,address,info,MRT,latitude,longitude,file FROM website.TPtrip LIMIT %s, %s",((page+1)*12-11,(page+1)*12))
         result = cursor.fetchall()
         # release the connection back to the pool for reuse
@@ -169,6 +173,77 @@ def attractionIdApi(attractionId):
        # release the connection back to the pool for reuse
         pool.release(conn)
         cursor.close()
+
+# get the current user's data
+@app.route('/api/user', methods=['GET']) 
+def getUser():
+    if "id" in session :
+        id = session['id']
+        email = session['email'] 
+        name = session['name'] 
+        data = {'id':id, 'email':email, 'name':name}
+        resultJSON = json.dumps({"data": data}) 
+    else :
+        resultJSON = json.dumps({"data": None}) 
+    return Response(resultJSON, mimetype='application/json')
+
+# sign up
+@app.route('/api/user', methods=['POST']) 
+def signup():
+    req_data = request.get_json()
+    name =req_data['name']
+    email = req_data['email']
+    password = req_data['password']
+    if name == '' or email == '' or password == '' : 
+        resultJSON = json.dumps({"error": True, "message": "資料不能為空白" })
+    else:
+        conn = pool.get_conn()
+        cursor = conn.cursor()
+        sql = "SELECT COUNT(*) FROM user WHERE email = %s"
+        cursor.execute(sql, (email))
+        result = cursor.fetchone() 
+        # if there is already the user saved in the db
+        if result['COUNT(*)'] > 0:
+            print("duplicate")
+            resultJSON = json.dumps({"error": True, "message": "已被註冊的email"})
+        else :
+            print("insert")
+            sql = "INSERT INTO user (name, email, password) VALUES (%s,%s,%s)"
+            cursor.execute(sql, (name, email, password))
+            conn.commit()
+            resultJSON = json.dumps({"ok": True})
+        pool.release(conn)
+        cursor.close()
+    return Response(resultJSON, mimetype='application/json')
+
+# log in 
+@app.route('/api/user', methods=['PATCH']) 
+def login():
+    req_data = request.get_json()
+    email =req_data['email']
+    password = req_data['Password']
+    conn = pool.get_conn()
+    cursor = conn.cursor()
+    sql = "SELECT id , email, name, password FROM user WHERE email = %s and password = %s;"
+    cursor.execute(sql, (email, password))
+    result = cursor.fetchone()
+    if result['email'] == email :
+        session['id']= result['id']
+        session['email'] = result['email']
+        session['name'] = result['name']
+        resultJSON = json.dumps({"ok": True})
+    else :
+        resultJSON = json.dumps({"error": True, "message": "帳號或密碼錯誤" })
+    pool.release(conn)
+    cursor.close()
+    return Response(resultJSON, mimetype='application/json')
+
+# log out
+@app.route('/api/user', methods=['DELETE']) 
+def logout():
+    session.clear()
+    resultJSON = json.dumps({"ok": True})
+    return Response(resultJSON, mimetype='application/json')
 
 
 if __name__=="__main__":

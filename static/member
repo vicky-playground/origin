@@ -1,0 +1,154 @@
+function openLoginForm() {
+  document.getElementById('login-form').style.display = 'block';
+}
+
+// close member forms
+function closeForm() {
+  if(document.getElementById('login-form').style.display == 'block'){
+    document.getElementById('login-form').style.display = 'none';
+  }
+  else if (document.getElementById('signup-form').style.display == 'block'){
+    document.getElementById('signup-form').style.display = 'none';
+  }
+}
+
+
+const switchForm = () => {
+  if (document.getElementById('login-form').style.display == 'block') {
+    document.getElementById('login-form').style.display = 'none';
+    document.getElementById('signup-form').style.display = 'block';
+    // clear the previous data
+    document.getElementById("login-msg").innerHTML = ''; 
+    document.getElementById('login-email').value = '';
+    document.getElementById('login-password').value = '';
+
+  } else if (document.getElementById('signup-form').style.display == 'block') {
+    document.getElementById('signup-form').style.display = 'none';
+    document.getElementById('login-form').style.display = 'block';
+    // clear the previous data
+    document.getElementById("msg-signup").innerHTML = '';
+    document.getElementById('signup-name').value = '';
+    document.getElementById('signup-email').value = '';
+    document.getElementById('signup-password').value = '';
+  }
+}
+
+// check the session to see if the user has logged in
+// {"data": {"id": 1,"name": "彭彭彭","email": "ply@ply.com"}}
+async function signinCheck() {
+  const UserApi = '/api/user'
+  await fetch(UserApi)
+      .then(res => res.json())
+      .then(result => {
+          console.log(result.data, result.data != null)
+          if (result.data != null) { 
+            document.getElementById('login-btn').style.display = 'none';
+            document.getElementById('logout-btn').style.display = 'block';
+          } else {
+            document.getElementById('login-btn').style.display = 'block';
+            document.getElementById('logout-btn').style.display = 'none';
+          }
+      })
+}
+// call the function whenever laoding the website
+signinCheck();
+
+
+
+// log in
+async function login(e) {
+  e.preventDefault();
+  document.getElementById('login-msg').innerText = '';
+  const UserApi = '/api/user';
+  const data = {
+      email: document.getElementById('login-email').value,
+      Password: document.getElementById('login-password').value,
+  }
+  // console.log(data)
+  if (data['email'] == '' | data['password'] == '') {
+    document.getElementById('login-msg').innerText = '請填入帳號或密碼'
+  } else {
+      await fetch(UserApi, {
+              method: 'PATCH',
+              body: JSON.stringify(data),
+              headers: new Headers({
+                  'Content-Type': 'application/json'
+              })
+          })
+          .then(result => result.json())
+          .then(data => {
+              if (data.ok) {
+                  closeForm();
+                  document.getElementById('login-btn').style.display = 'none';
+                  document.getElementById('logout-btn').style.display = 'block';
+              } else {
+                document.getElementById("login-msg").innerText = data.message;
+              }
+          })
+          .catch(data => {
+              console.log('error')
+              document.getElementById("login-msg").innerText = data.message;
+          })
+  }
+}
+
+document.getElementById('login-submit').addEventListener('click', login)
+
+// email format 
+const mailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+// sign up 
+async function signup(e) {
+  e.preventDefault();
+  if (!document.getElementById("signup-email").value.match(mailFormat)){
+    return document.getElementById('signup-msg').innerHTML = "請填寫正確的email";
+  }
+  document.getElementById('signup-msg').innerText = '';
+  const UserApi = '/api/user'
+  const data = {
+      name: document.getElementById('signup-name').value,
+      email: document.getElementById('signup-email').value,
+      password: document.getElementById('signup-password').value
+  }
+  console.log(data)
+  if (data['name'] == '' | data['email'] == '' | data['password'] == '') {
+    document.getElementById('signup-msg').innerText = '請填寫註冊資料'
+  } else {
+      await fetch(UserApi, {
+              method: 'POST',
+              body: JSON.stringify(data),
+              headers: new Headers({
+                  'Content-Type': 'application/json'
+              })
+          })
+          .then(result => result.json())
+          .then(data => {
+              if (data.ok) {
+                document.getElementById('signup-msg').innerText = '註冊成功';
+                  alert('以會員身份開始探索囉！')      
+              } else {
+                console.log(data.message);
+                document.getElementById('signup-msg').innerText = data.message;
+              }
+          })
+
+  }
+}
+document.getElementById('signup-submit').addEventListener('click', signup)
+
+// log out
+async function logout() {
+  const UserApi = '/api/user'
+  const result = await fetch(UserApi, {
+      method: 'DELETE'
+  })
+  console.log(result)
+  alert('已登出')
+  document.getElementById('logout-btn').style.display = 'none'
+  document.getElementById('login-btn').style.display = 'block'
+}
+
+
+
+
+
+

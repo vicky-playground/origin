@@ -316,11 +316,15 @@ img {
   top: 0;
 }
 
-#login {
+#login-form {
   display: none;
 }
 
-#signup {
+#logout{
+  display: none;
+}
+
+#signup-form {
   display: none;
 }
 
