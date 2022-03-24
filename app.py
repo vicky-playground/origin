@@ -189,10 +189,10 @@ def getUser():
 # sign up
 @app.route('/api/user', methods=['POST']) 
 def signup():
-    req_data = request.get_json()
-    name =req_data['name']
-    email = req_data['email']
-    password = req_data['password']
+    requestJSON = request.get_json()
+    name = requestJSON['name']
+    email = requestJSON['email']
+    password = requestJSON['password']
     if name == '' or email == '' or password == '' : 
         resultJSON = json.dumps({"error": True, "message": "資料不能為空白" })
     else:
@@ -200,9 +200,9 @@ def signup():
         cursor = conn.cursor()
         sql = "SELECT COUNT(*) FROM user WHERE email = %s"
         cursor.execute(sql, (email))
-        result = cursor.fetchone() 
+        user = cursor.fetchone() 
         # if there is already the user saved in the db
-        if result['COUNT(*)'] > 0:
+        if user['COUNT(*)'] > 0:
             print("duplicate")
             resultJSON = json.dumps({"error": True, "message": "已被註冊的email"})
         else :
@@ -218,21 +218,22 @@ def signup():
 # log in 
 @app.route('/api/user', methods=['PATCH']) 
 def login():
-    req_data = request.get_json()
-    email =req_data['email']
-    password = req_data['Password']
+    requestJSON = request.get_json()
+    email = requestJSON['email']
+    password = requestJSON['Password']
     conn = pool.get_conn()
     cursor = conn.cursor()
     sql = "SELECT id , email, name, password FROM user WHERE email = %s and password = %s;"
     cursor.execute(sql, (email, password))
-    result = cursor.fetchone()
-    if result['email'] == email :
-        session['id']= result['id']
-        session['email'] = result['email']
-        session['name'] = result['name']
-        resultJSON = json.dumps({"ok": True})
-    else :
+    user = cursor.fetchone()
+    if user is None:
         resultJSON = json.dumps({"error": True, "message": "帳號或密碼錯誤" })
+    else :
+        session['id']= user['id']
+        session['email'] = user['email']
+        session['name'] = user['name']
+        resultJSON = json.dumps({"ok": True})
+        
     pool.release(conn)
     cursor.close()
     return Response(resultJSON, mimetype='application/json')
