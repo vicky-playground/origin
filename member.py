@@ -13,12 +13,6 @@ import sys, traceback
 from flask_jwt_extended import *
 import member
 
-app=Flask(__name__, template_folder="templates")
-app.secret_key = os.urandom(24)
-app.config["JSON_AS_ASCII"]=False
-app.config["TEMPLATES_AUTO_RELOAD"]=True
-app.config['JSON_SORT_KEYS'] = False
-
 
 # connect to the local DB
 pool = Pool(host = "127.0.0.1", user = "root", password="12345678", database='website', port= 3306)
