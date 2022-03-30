@@ -4,14 +4,8 @@ import json
 import pymysql
 import pymysql.cursors
 from pymysqlpool.pool import Pool
-import ast
 pymysql.install_as_MySQLdb()
-from collections import OrderedDict
-import os
-from urllib import response
-import sys, traceback
 from flask_jwt_extended import *
-import member
 
 
 # connect to the local DB
@@ -19,7 +13,7 @@ pool = Pool(host = "127.0.0.1", user = "root", password="12345678", database='we
 pool.init()
 
 
-# get the current user's data
+# get the current user's data from session  
 @user.route('/api/user', methods=['GET']) 
 def getUser():
     if "id" in session :
@@ -47,10 +41,20 @@ def signup():
         sql = "SELECT COUNT(*) FROM user WHERE email = %s"
         cursor.execute(sql, (email))
         user = cursor.fetchone() 
+        msg = ''
         # if there is already the user saved in the db
         if user['COUNT(*)'] > 0:
             print("duplicate")
-            resultJSON = json.dumps({"error": True, "message": "已被註冊的email"})
+            msg = "已被註冊的email"
+            resultJSON = json.dumps({"error": True, "message": msg})
+        
+        if not checkPassword(password):
+            print("psw not strong")
+            if msg != "":
+                msg = msg+"、密碼強度不符"
+            else:
+                msg = "密碼強度不符"
+            resultJSON = json.dumps({"error": True, "message": msg})
         else :
             print("insert")
             sql = "INSERT INTO user (name, email, password) VALUES (%s,%s,%s)"
@@ -60,6 +64,29 @@ def signup():
         pool.release(conn)
         cursor.close()
     return Response(resultJSON, mimetype='application/json')
+
+# Function to validate the password
+def checkPassword(passwd):   
+    SpecialSym =['$', '@', '#', '%']
+    val = True
+      
+    if len(passwd) < 6:
+        print('length should be at least 6')
+        val = False
+          
+    if not any(char.isdigit() for char in passwd):
+        print('Password should have at least one numeral')
+        val = False
+          
+    if not any(char.isupper() for char in passwd):
+        print('Password should have at least one uppercase letter')
+        val = False
+          
+    if not any(char in SpecialSym for char in passwd):
+        print('Password should have at least one of the symbols $@#')
+        val = False
+    if val:
+        return val
 
 # log in 
 @user.route('/api/user', methods=['PATCH']) 
