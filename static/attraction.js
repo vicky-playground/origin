@@ -188,7 +188,7 @@ function closeForm() {
 
 async function book(){
   if (document.getElementById('logout-btn').style.display == 'none'){
-    openLoginForm();
+    await openLoginForm();
     return;
   }
   site = window.location.href.split("/")[4];
@@ -210,12 +210,12 @@ async function book(){
     console.log(site, date, time, price); 
     await fetch(bookingApi, {
         method: 'POST',
-        body: JSON.stringify({ attractionId: site, date: date, time: time,price:price }),
+        body: JSON.stringify({ attractionId: site, date: date, time: time, price:price }),
         headers: new Headers({
             'Content-Type': 'application/json'
         })
     })
     .then(result => result.json())
     window.location.href='/booking';
-}
+  }
 }

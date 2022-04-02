@@ -13,9 +13,9 @@ import member
 pool = Pool(host = "127.0.0.1", user = "root", password="12345678", database='website', port= 3306)
 pool.init()
 
-###boking api###
+# get the trip not ordered yet
 @trip.route('/api/booking', methods=['GET'])
-def  booking_get():
+def  getTrip():
     if "email" in session :
         print(session['email'])
         email = session['email'] 
@@ -24,9 +24,9 @@ def  booking_get():
         sql = "SELECT attraction_id, date, time, price, email, stitle, address, SUBSTRING_INDEX(file, ',', 1) AS image FROM booking INNER JOIN TPtrip ON TPtrip.id = booking.attraction_id WHERE email = %s" # ('https://www.travel.taipei/d_upload_ttn/sceneadmin/pic/11000340.jpg'
         cursor.execute(sql, (email))
         result = cursor.fetchone()
-        if not result: #沒有訂購資料
-            result_JSON = json.dumps({"data": None,"message": "沒有訂購資料"})
-        else: #有訂購資料
+        if not result: 
+            result_JSON = json.dumps({"data": None,"message": "尚未下訂"})
+        else: 
             attraction = {
                 'id':result['attraction_id'],
                 'name':result['stitle'],
@@ -41,20 +41,15 @@ def  booking_get():
                                       'price':result['price']},  indent=1, default=str)     
         
     else:
-        result_JSON = json.dumps({"error": True,"message": "沒有登入帳戶"})
-        print("message", "沒有登入帳戶", result_JSON)
+        result_JSON = json.dumps({"error": True,"message": "請登入會員"})
+        print("message", "請登入會員", result_JSON)
     pool.release(conn)
     cursor.close()
     return Response(result_JSON, mimetype='application/json')
 
-
-#booking POST api 編寫邏輯
-#如果訂單有重複使用者ID則delete掉，一個使用者最多一筆訂單(本網頁邏輯，因為沒有設計訂購清單)
-#步驟如下:
-#1.先搜尋此使用者訂單有幾筆(正常來說應該最多一筆或沒有訂單)
-#當個人訂單數量清空後才能掛上新單
+# build a new trip
 @trip.route('/api/booking', methods=['POST'])
-def  booking_post():
+def  postTrip():
     print("email: ", session['email'])
     req_data = request.get_json() #{'attractionId': '2', 'date': '2022-04-07', 'time': 'morning', 'price': '2000'}
     email = session['email']
@@ -63,10 +58,10 @@ def  booking_post():
     Price = req_data['price']
     Time = req_data['time']
     session['price'] = Price
-    if Date == '' or Price == '' or Time == '' : #篩選填入資料不得為空
-        result_JSON = json.dumps({"error": bool(True) ,"message": "填入資料不得為空"})
+    if Date == '' or Price == '' or Time == '' : 
+        result_JSON = json.dumps({"error": bool(True) ,"message": "請填寫完整資料"})
     elif id == '':
-        result_JSON = json.dumps({"error": bool(True) ,"message": "需要登入會員"})
+        result_JSON = json.dumps({"error": bool(True) ,"message": "請登入會員"})
     else:
         conn = pool.get_conn()
         cursor = conn.cursor()
@@ -81,7 +76,7 @@ def  booking_post():
                 print("update: ", AttractionId, Date, Price, Time) #3 2022-04-07 2000 morning
                 result_JSON = json.dumps({"ok": bool(True)})
             except:
-                result_JSON = json.dumps({"error": bool(True) ,"message": "訂購失敗"})
+                result_JSON = json.dumps({"error": bool(True) ,"message": "下訂失敗"})
                 
         # insert if there is no booking record
         else:
@@ -93,18 +88,15 @@ def  booking_post():
                 result_JSON = json.dumps({"ok": bool(True)})
                 print("result: ", result_JSON) 
             except:
-                result_JSON = json.dumps({"error": bool(True) ,"message": "訂購失敗"})
+                result_JSON = json.dumps({"error": bool(True) ,"message": "下訂失敗"})
     pool.release(conn)
     cursor.close()
     return Response(result_JSON, mimetype='application/json')
   
             
-        
-    
-
-
+# delete the trip
 @trip.route('/api/booking', methods=['DELETE'])
-def  booking_DELETE():
+def  deleteTrip():
     if "email" in session :
         try:
             email = session['email'] #test@gmail.com
