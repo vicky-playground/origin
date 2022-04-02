@@ -143,3 +143,18 @@ function search() {
     load()
   }
 }
+
+async function checkOrder(){
+  const UserApi = '/api/user'
+  await fetch(UserApi)
+      .then(res => res.json())
+      .then(result => {
+          console.log(result.data, result.data == null)
+          if (result.data != null) { 
+            window.location = 'http://127.0.0.1:3000/booking';
+          }
+          else{
+            openLoginForm();
+          }
+        })
+}
