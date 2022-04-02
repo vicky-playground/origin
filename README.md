@@ -5,8 +5,11 @@
 ### Wireframe: https://www.figma.com/file/CeFwqBSbNWZbWz2ih4YS6z/Taipei-Trip-%E5%8F%B0%E5%8C%97%E4%B8%80%E6%97%A5%E9%81%8A?node-id=34%3A277
 
 ### API: https://app.swaggerhub.com/apis-docs/padax/taipei-trip/1.0.0
-
+#### 3/13
 ![Mar-13-2022 18-29-16](https://user-images.githubusercontent.com/90204593/158055417-a60b63b1-19a9-45bf-8ba2-b5fff6ecc812.gif)<br/>
+#### 3/20
 ![Mar-20-2022 17-49-01](https://user-images.githubusercontent.com/90204593/159156869-d7c7a270-80a4-431c-976e-dca00cfd65be.gif)<br/>
-#### membership system & design:<br/>
-![Mar-25-2022 02-42-14](https://user-images.githubusercontent.com/90204593/159988009-fef3ba91-fce1-4fc3-b08a-4fcef55eb54e.gif)
+#### 3/25 membership system & design:<br/>
+![Mar-25-2022 02-42-14](https://user-images.githubusercontent.com/90204593/159988009-fef3ba91-fce1-4fc3-b08a-4fcef55eb54e.gif)<br/>
+#### 4/2 order api
+![Apr-03-2022 01-29-37](https://user-images.githubusercontent.com/90204593/161394451-f9c81de2-9e2b-41f9-84e7-ca4df1bbec6e.gif)<br/>
