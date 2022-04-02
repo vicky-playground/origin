@@ -208,7 +208,7 @@ function book(){
   // the order info
   else{ 
     console.log(site, date, time, price); 
-    await fetch(bookingApi, {
+    fetch(bookingApi, {
         method: 'POST',
         body: JSON.stringify({ attractionId: site, date: date, time: time, price:price }),
         headers: new Headers({
