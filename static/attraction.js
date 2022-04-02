@@ -216,6 +216,13 @@ async function book(){
         })
     })
     .then(result => result.json())
-    window.location.href='/booking';
+    .then(data => {
+      if (data.ok) {
+        window.location.href='/booking';
+      }
+      else{
+        console.log(data.message);
+      }
+    })
   }
 }
