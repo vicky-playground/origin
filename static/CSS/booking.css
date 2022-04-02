@@ -197,7 +197,8 @@ color: #666666;
   display: flex;
   justify-content: flex-end;
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 0 0 0 80%;
+ 
 }
 .price-total{
   font-family: 'Noto Sans TC';
@@ -205,6 +206,19 @@ color: #666666;
   font-weight: 700;
   font-size: 16px;
   color: #666666;
+  position:absolute;
+  top: 94%;
+  right: 10px;
+}
+
+#book-check{
+  top: 96%;
+  right: 10px;
+  position:absolute;
+}
+
+#book{
+  margin-bottom: 43px;
 }
 
 /* mobile: <= 600px, min 360px */
@@ -229,6 +243,11 @@ color: #666666;
   .upper{
     display:block;
 
+  }
+
+  .book{
+    
+    margin: 43px 0 0 50%;
   }
 
   .book-reminder{
