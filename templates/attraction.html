@@ -40,7 +40,7 @@
             <div class='info'>以此景點為中心的一日行程，帶您探索城市角落故事</div>
             <div class='inline'>
               <div>選擇日期：</div>
-              <input type='date'>
+              <input type='date' id='date'>
             </div>
             <div class='inline'>
               <div>選擇時間：</div>
@@ -59,9 +59,9 @@
             </div>
             <div class='inline'>
               <div>導覽費用：</div>
-              <div class='price'> 新台幣 2000 元</div>
+              <div class='price' id='price'> 新台幣 2000 元</div>
             </div>
-            <input type='button' value='開始預訂行程'>
+            <input type='button' value='開始預訂行程' onclick='book()'>
           </form>
         </div>
       </div>

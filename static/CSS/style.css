@@ -303,6 +303,11 @@ img {
   #footer {
     margin-top: 15px;
   }
+
+  #login-btn{
+    margin-left: 0px;
+    margin-right: 0;
+  }
 }
 
 
@@ -318,6 +323,7 @@ img {
 
 #login-form {
   display: none;
+  z-index: 1;
 }
 
 #logout{

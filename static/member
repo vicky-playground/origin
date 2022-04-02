@@ -145,6 +145,10 @@ async function logout() {
   alert('已登出')
   document.getElementById('logout-btn').style.display = 'none'
   document.getElementById('login-btn').style.display = 'block'
+
+  if(document.getElementById("order-sec").style.display != ' none'){
+    window.location='http://127.0.0.1:3000/';
+  }
 }
 
 

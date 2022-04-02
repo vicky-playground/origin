@@ -1,3 +1,6 @@
+let img;
+let name;
+
 //load the home page 
 function load() {
   // use ajax to get the data
@@ -43,8 +46,8 @@ async function getData(page=0, keyword) {
 // display the content of attractions
 function display(nextPage, data, keyword) {
   for (let i = 0; i < data.length; i++) {
-    let img = data[i].images[0];
-    let name = data[i].name;
+    img = data[i].images[0];
+    name = data[i].name;
     let mrt = data[i].mrt;
     let category = data[i].category;
     // Create boxes

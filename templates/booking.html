@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-tw" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='CSS/booking.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='CSS/style.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='CSS/site.css') }}">
+  <script type='text/javascript' src='../static/member' defer></script>
+  <script type='text/javascript' src='../static/booking.js' defer></script>  
+  <title>Taipei Attractions</title>
+</head>
+<body onload="renderTrip()">
+  <div id="shadow"></div>
+      <!-- The Modal -->
+      <div class='modal-bottom' id='login-form'>
+        <div class='modal'>
+          <div class='deco'></div>
+          <div class='modal-content'>
+            <img class='close' src='../static/IMG/dialog.png' onclick="closeForm()">
+            <form class='form' action="/api/user" method="post" name="login-form">
+              <div class='form-title'>登入會員帳號</div>
+              <input type='text' class='input' name="email" placeholder='輸入電子信箱' id='login-email' value="" required>
+              <input type='password' class='input' name='password' placeholder='輸入密碼' id='login-password' value="" required><br>
+              <input type='submit' value='登入帳戶' class='submit' id='login-submit'>
+              <div class='error' id="login-msg"></div>
+              <div class='switch' onclick="switchForm()">還沒有帳戶？點此註冊</div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class='modal-bottom' id='signup-form'>
+        <div class='modal'>
+          <div class='deco'></div>
+          <div class='modal-content'>
+            <img class='close' src='../static/IMG/dialog.png' onclick="closeForm()">
+            <form class='form' action="/api/user"  name="signup-form">
+              <div class='form-title'>註冊會員帳號</div>
+              <input type='text' class='input' name='name' placeholder='輸入姓名' id='signup-name' value="" required>
+              <input type='text' class='input' name='email' placeholder='輸入電子信箱' id='signup-email' value="" required>
+              <input type='password' class='input' name='password' placeholder='輸入密碼' id='signup-password' value="" required><br>
+              <input type='submit' value='註冊新帳戶' class='submit' id='signup-submit'>
+              <div class='error' id="signup-msg">密碼須至少6字元<br> 含1大寫、數字、特殊符號$@#%</div>
+              <div class='switch' onclick="switchForm()">已經有帳戶了？點此登入</div>
+            </form>
+          </div>
+        </div>
+      </div>
+<div class='nav-bar'>
+  <div class='nav'>
+    <a class='theme' href="{{ url_for('index') }}">台北一日遊</a>
+    <div class='btn-container'>
+      <div class='btn'>預定行程</div>
+      <div class='btn' id='login-btn' onclick="openLoginForm()">登入/註冊</div>
+      <div class='btn' id='logout-btn' onclick="logout()">登出系統</div>
+    </div>
+  </div>
+</div>
+<div class='book-container'></div>
+<div class='form-contact'>您好，{{session['name']}}，待預定的行程如下:</div> 
+<section class="trip-info" id="trip-info"></section>
+<div class='no-order-sec' id="no-order">
+  <p class='no-order'>目前沒有任何待預訂的行程</p>
+</div>
+<div class='border' id='border'></div>
+<div class='order-sec' id='order-sec'>
+  <section class='order-form-sec'>
+    <div class='order-form'>
+      <div class='form-contact'>您的聯絡資訊</div>
+        <div class='form-detail'>
+          <div class='form-qa'>聯絡姓名 :<input class='form-input' type="text" value="" required></div>
+            <div class='form-qa'>聯絡信箱 :<input class='form-input' type="email" value="" required></div>
+              <div class='form-qa'>手機號碼 :<input class='form-input' type="tel" value="" required></div>
+        </div>
+        <div class='book-reminder'>請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</div>
+    </div>
+  </section>
+  <div class='border' id='border'></div>
+    <section class='order-form-sec'>
+        <div class='order-form'>
+            <div class='form-contact'>信用卡付款資訊</div>
+            <div class='form-detail'>
+                <div class='form-qa'>卡片號碼 :<input class='form-input' type="tel" inputmode="numeric" pattern="[0-9\s]{13,19}" autocomplete="cc-number" maxlength="19" placeholder="**** **** **** ****"></div>
+                <div class='form-qa'>過期時間 :<input class='form-input' type="text" placeholder="MM/YY"></div>
+                <div class='form-qa'>驗證密碼 :<input class='form-input' type="number" placeholder="CVV"></div>
+            </div>
+        </div>
+    </section>
+  <div class='border' id='border'></div>
+  <div class='book'>
+    <div style='margin-top: 43px;'>
+        <div class='price-total'>總價:新台幣 {{session['price']}} 元</div>
+        <input type='button' value='確認訂購並付款'></input>
+    </div>
+  </div>
+</div>
+<footer id='footer'>COPYRIGHT © 2022 台北一日遊</footer>
+</body>
+</html>
