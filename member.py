@@ -47,15 +47,7 @@ def signup():
             print("duplicate")
             msg = "已被註冊的email"
             resultJSON = json.dumps({"error": True, "message": msg})
-        
-        if not checkPassword(password):
-            print("psw not strong")
-            if msg != "":
-                msg = msg+"、密碼強度不符"
-            else:
-                msg = "密碼強度不符"
-            resultJSON = json.dumps({"error": True, "message": msg})
-        else :
+        else:
             print("insert")
             sql = "INSERT INTO user (name, email, password) VALUES (%s,%s,%s)"
             cursor.execute(sql, (name, email, password))
@@ -65,7 +57,17 @@ def signup():
         cursor.close()
     return Response(resultJSON, mimetype='application/json')
 
-# Function to validate the password
+"""
+        if not checkPassword(password):
+            print("psw not strong")
+            if msg != "":
+                msg = msg+"、密碼強度不符"
+            else:
+                msg = "密碼強度不符"
+            resultJSON = json.dumps({"error": True, "message": msg})
+        """
+#Function to validate the password
+"""
 def checkPassword(passwd):   
     SpecialSym =['$', '@', '#', '%']
     val = True
@@ -87,6 +89,7 @@ def checkPassword(passwd):
         val = False
     if val:
         return val
+"""
 
 # log in 
 @user.route('/api/user', methods=['PATCH']) 
