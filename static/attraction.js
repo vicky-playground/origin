@@ -186,9 +186,9 @@ function closeForm() {
   document.getElementById("login").style.display = "none";
 }
 
-async function book(){
+function book(){
   if (document.getElementById('logout-btn').style.display == 'none'){
-    await openLoginForm();
+    openLoginForm();
     return;
   }
   site = window.location.href.split("/")[4];
