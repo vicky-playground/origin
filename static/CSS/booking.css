@@ -238,4 +238,10 @@ color: #666666;
   .book-info{
     margin: 80px 0;
   }
+
+  .book-delete{
+    position:absolute;
+    right: 10px;
+    top:36%;
+  }
 }

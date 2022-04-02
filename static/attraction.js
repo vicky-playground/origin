@@ -218,6 +218,7 @@ function book(){
     .then(result => result.json())
     .then(data => {
       if (data.ok) {
+        console.log(data.ok)
         window.location.href='/booking';
       }
       else{
