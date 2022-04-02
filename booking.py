@@ -51,14 +51,14 @@ def  getTrip():
 @trip.route('/api/booking', methods=['POST'])
 def  postTrip():
     print("email: ", session['email'])
-    req_data = request.get_json() #{'attractionId': '2', 'date': '2022-04-07', 'time': 'morning', 'price': '2000'}
+    requestJSON = request.get_json() #{'attractionId': '2', 'date': '2022-04-07', 'time': 'morning', 'price': '2000'}
     email = session['email']
-    AttractionId = req_data['attractionId']
-    Date =req_data['date']
-    Price = req_data['price']
-    Time = req_data['time']
-    session['price'] = Price
-    if Date == '' or Price == '' or Time == '' : 
+    attractionId = requestJSON['attractionId']
+    date = requestJSON['date']
+    price = requestJSON['price']
+    time = requestJSON['time']
+    session['price'] = price
+    if date == '' or price == '' or time == '' : 
         result_JSON = json.dumps({"error": bool(True) ,"message": "請填寫完整資料"})
     elif id == '':
         result_JSON = json.dumps({"error": bool(True) ,"message": "請登入會員"})
@@ -71,24 +71,24 @@ def  postTrip():
         if sql_run !=0: 
             try:
                 sql = "UPDATE booking SET attraction_id=%s, date=%s, time=%s, price=%s WHERE email=%s;"
-                sql_run = cursor.execute(sql,(AttractionId,Date,Time,Price,email))
+                sql_run = cursor.execute(sql,(attractionId, date, time, price, email))
                 conn.commit() 
-                print("update: ", AttractionId, Date, Price, Time) #3 2022-04-07 2000 morning
-                result_JSON = json.dumps({"ok": bool(True)})
+                print("update: ", attractionId, date, price, time) #3 2022-04-07 2000 morning
+                result_JSON = json.dumps({"ok": True})
             except:
-                result_JSON = json.dumps({"error": bool(True) ,"message": "下訂失敗"})
+                result_JSON = json.dumps({"error": True,"message": "下訂失敗"})
                 
         # insert if there is no booking record
         else:
             try:
                 sql = "INSERT INTO booking (attraction_id, date, time, price, email) VALUES (%s,%s,%s,%s,%s)"
-                sql_run = cursor.execute(sql, (AttractionId, Date, Time, Price, email))
+                sql_run = cursor.execute(sql, (attractionId, date, time, price, email))
                 conn.commit() 
-                print("insert: ", AttractionId, Date, Price, Time)
-                result_JSON = json.dumps({"ok": bool(True)})
+                print("insert: ", attractionId, date, price, time)
+                result_JSON = json.dumps({"ok": True})
                 print("result: ", result_JSON) 
             except:
-                result_JSON = json.dumps({"error": bool(True) ,"message": "下訂失敗"})
+                result_JSON = json.dumps({"error": True ,"message": "下訂失敗"})
     pool.release(conn)
     cursor.close()
     return Response(result_JSON, mimetype='application/json')
@@ -106,12 +106,12 @@ def  deleteTrip():
             cursor.execute(sql,(email))
             conn.commit()
             print("record(s) deleted")
-            result_JSON = json.dumps({"ok": bool(True)})
+            result_JSON = json.dumps({"ok": True})
         except :
-            result_JSON = json.dumps({"error": bool(True),"message": "刪除失敗"})
+            result_JSON = json.dumps({"error": True,"message": "刪除失敗"})
             print("刪除失敗")
     else :
-        result_JSON = json.dumps({"error": bool(True) ,"message": "流程錯誤"})
+        result_JSON = json.dumps({"error": True ,"message": "流程錯誤"})
     pool.release(conn)
     cursor.close()
     return Response(result_JSON, mimetype='application/json')

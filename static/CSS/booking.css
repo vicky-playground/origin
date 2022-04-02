@@ -71,7 +71,8 @@ display: none;
 }
 
 .trip-info{
-  margin: 0 10vw;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
 .upper{
@@ -192,7 +193,7 @@ color: #666666;
   color: #666666;
 }
 
-.confirm{
+.book{
   display: flex;
   justify-content: flex-end;
   max-width: 1200px;
