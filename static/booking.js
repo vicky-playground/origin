@@ -29,14 +29,14 @@ async function renderTrip(){
   .then(result => {
   // when there is no order yet
   if(result.data == null){
-    noOrder.style.display= 'flex'
-    let footer = document.getElementById('footer')
+    noOrder.style.display= 'flex';
+    let footer = document.getElementById('footer');
     footer.style.paddingBottom = "1000px";
-    return false
+    return false;
   }else{
-    noOrder.style.display = 'none'
+    noOrder.style.display = 'none';
   }
-
+  
   // show the area of order info
   document.getElementById('order-sec').style.display = 'block'
   // build the parent of the trip contents (img, text..)
@@ -157,6 +157,7 @@ async function renderTrip(){
   // put into the first parent
   tripInfo.appendChild(upper);
 })
+  renderPrice();
 }
 
 // render the price of the trip
@@ -168,7 +169,8 @@ renderPrice=()=>{
   for(i of tripPrice){
     subtotal += Number(i.innerHTML.split("</div>")[1]);
   }
-  total.innerHTML = subtotal;
+  console.log(subtotal)
+  total.innerHTML = subtotal;// change $0 to subtotal
   if(subtotal == 0){
     noOrder.style.display = 'flex'
     document.getElementById('order-sec').innerHTML = null;
@@ -199,7 +201,6 @@ async function deleteTrip(siteId){
       orderData.style.display = 'none'
       let footer = document.getElementById("footer")
       footer.style.paddingBottom = "1000px";
-      renderPrice();
     }else{
       console.log('API error')
     }
