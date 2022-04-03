@@ -21,7 +21,6 @@ async function signinCheck() {
 signinCheck()
 
 //render the view of the trip
-
 async function renderTrip(){
   let noOrder = document.getElementById("no-order");
 
@@ -92,7 +91,6 @@ async function renderTrip(){
   tripAddr.setAttribute("class", 'order-trip');
   trip_a = document.createTextNode("地址 :");
   tripAddr.appendChild(trip_a);
-  
   // site name
   let nameSec=document.createElement("div");
   nameSec.setAttribute("class",'order-name-sec')
@@ -161,6 +159,24 @@ async function renderTrip(){
 })
 }
 
+// render the price of the trip
+renderPrice=()=>{
+  let tripPrice = document.getElementsByClassName('trip-price');
+  let total = document.getElementById('total');
+  let subtotal = 0;
+  let noOrder = document.getElementById('no-order');
+  for(i of tripPrice){
+    subtotal += Number(i.innerHTML.split("</div>")[1]);
+  }
+  total.innerHTML = subtotal;
+  if(subtotal == 0){
+    noOrder.style.display = 'flex'
+    document.getElementById('order-sec').innerHTML = null;
+    document.getElementById('border').style.display = "none";
+    document.getElementById('footer').style.paddingBottom = "1000px";
+  }
+}
+
 //delete
 async function deleteTrip(siteId){
   let id = siteId.split("=")[1]
@@ -176,13 +192,14 @@ async function deleteTrip(siteId){
     if (data.ok){
       let upper = document.getElementById('upper='+id)
       upper.remove();
-      let noOrderMsg = document.getElementById('no-order')
-      noOrderMsg.style.display = 'block'
-      noOrderMsg.style.textAlign = 'left'
+      let noOrder = document.getElementById('no-order')
+      noOrder.style.display = 'block'
+      noOrder.style.textAlign = 'left'
       let orderData = document.getElementById("order-sec")
       orderData.style.display = 'none'
       let footer = document.getElementById("footer")
       footer.style.paddingBottom = "1000px";
+      renderPrice();
     }else{
       console.log('API error')
     }
