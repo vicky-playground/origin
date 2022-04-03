@@ -13,6 +13,12 @@ body
   box-sizing: border-box;
   text-decoration: none;
 }
+
+img{
+  object-fit:cover;
+  height: 100%;
+  overflow: auto;
+}
   
  
 .nav-bar {
