@@ -113,7 +113,6 @@ def attractionAPI():
         # release the connection back to the pool for reuse
         pool.release(conn)
         cursor.close()
-
         dataLen = len(result)
         rowcount = cursor.rowcount
         # the organized result

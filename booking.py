@@ -89,8 +89,8 @@ def  postTrip():
                 print("result: ", result_JSON) 
             except:
                 result_JSON = json.dumps({"error": True ,"message": "下訂失敗"})
-    pool.release(conn)
-    cursor.close()
+        pool.release(conn)
+        cursor.close()
     return Response(result_JSON, mimetype='application/json')
   
             
@@ -110,8 +110,10 @@ def  deleteTrip():
         except :
             result_JSON = json.dumps({"error": True,"message": "刪除失敗"})
             print("刪除失敗")
+        finally:
+            pool.release(conn)
+            cursor.close()
     else :
         result_JSON = json.dumps({"error": True ,"message": "流程錯誤"})
-    pool.release(conn)
-    cursor.close()
+ 
     return Response(result_JSON, mimetype='application/json')
