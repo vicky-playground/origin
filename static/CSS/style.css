@@ -29,6 +29,12 @@ img {
   height: auto;
 }
 
+img{
+  object-fit:cover;
+  height: 100%;
+  overflow: auto;
+}
+
 .search {
   border-radius: 0px 5px 5px 0px;
   height: 46px;
@@ -303,6 +309,11 @@ img {
   #footer {
     margin-top: 15px;
   }
+
+  #login-btn{
+    margin-left: 0px;
+    margin-right: 0;
+  }
 }
 
 
@@ -318,6 +329,7 @@ img {
 
 #login-form {
   display: none;
+  z-index: 1;
 }
 
 #logout{

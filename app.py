@@ -1,8 +1,8 @@
 from flask import *
 import os
 import member
-import attraction
 from attraction import site
+from booking import trip
 
 app=Flask(__name__, template_folder="templates")
 app.secret_key = os.urandom(24)
@@ -29,6 +29,7 @@ def thankyou():
 
 app.register_blueprint(member.user, url_prefix='')
 app.register_blueprint(site)
+app.register_blueprint(trip)
 
 if __name__=="__main__":
 	app.run(host='0.0.0.0',port=3000, use_reloader=False)

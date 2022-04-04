@@ -1,6 +1,12 @@
 // set the variable to get the value of id when calling onload=load(id) in the beginning
 let id = window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
 let imgId = 0;
+const bookingApi = '/api/booking' ;
+let addr;
+let site;
+let date;
+let price;
+let time;
 
 //load the page 
 function load(id) {
@@ -34,7 +40,7 @@ function display(res) {
   let name = res["name"]
   let category = res["category"]
   let desc = res["description"]
-  let addr = res["address"]
+  addr = res["address"]
   let transport = res["transport"]
   let mrt = res["mrt"]
   let img = res["images"]
@@ -178,4 +184,61 @@ function openForm() {
 
 function closeForm() {
   document.getElementById("login").style.display = "none";
+}
+
+function book(){
+  if (document.getElementById('logout-btn').style.display == 'none'){
+    openLoginForm();
+    return;
+  }
+  site = window.location.href.split("/")[4];
+  date = document.getElementById("date").value;
+  price = document.getElementById("price").innerHTML.match(/\d/g).join("");
+  
+  if (price == 2500){
+    time = "afternoon"
+  }
+  else{
+    time = "morning"
+  }
+  if(date == false){
+    alert("請選擇日期");
+    return;
+  }
+  // the order info
+  else{ 
+    console.log(site, date, time, price); 
+    fetch(bookingApi, {
+        method: 'POST',
+        body: JSON.stringify({ attractionId: site, date: date, time: time, price:price }),
+        headers: new Headers({
+            'Content-Type': 'application/json'
+        })
+    })
+    .then(result => result.json())
+    .then(data => {
+      if (data.ok) {
+        console.log(data.ok)
+        window.location.href='/booking';
+      }
+      else{
+        console.log(data.message);
+      }
+    })
+  }
+}
+
+async function checkOrder(){
+  const UserApi = '/api/user'
+  await fetch(UserApi)
+      .then(res => res.json())
+      .then(result => {
+          console.log(result.data, result.data == null)
+          if (result.data != null) { 
+            window.location = 'http://127.0.0.1:3000/booking';
+          }
+          else{
+            openLoginForm();
+          }
+        })
 }

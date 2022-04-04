@@ -13,6 +13,12 @@ body
   box-sizing: border-box;
   text-decoration: none;
 }
+
+img{
+  object-fit:cover;
+  height: 100%;
+  overflow: auto;
+}
   
  
 .nav-bar {
@@ -108,11 +114,10 @@ body
 }
 
 .circle {
-  
   position: absolute;
   cursor: pointer;
   top: 85%;
-  z-index: 1;
+  
 }
 
 .circle-sec li{
@@ -307,7 +312,6 @@ input[type='date'] {
 
 	.circle{
 		position:absolute;
-		z-index: 1;
 	}
 
   #img{
@@ -407,7 +411,6 @@ input[type='date'] {
   
 	.circle{
     position:absolute;
-		z-index: 1;
 	}
 
   #footer{
