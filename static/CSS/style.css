@@ -29,6 +29,12 @@ img {
   height: auto;
 }
 
+img{
+  object-fit:cover;
+  height: 100%;
+  overflow: auto;
+}
+
 .search {
   border-radius: 0px 5px 5px 0px;
   height: 46px;

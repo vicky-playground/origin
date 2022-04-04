@@ -1,3 +1,9 @@
+img{
+  object-fit:cover;
+  height: 100%;
+  overflow: auto;
+}
+
 .form-contact{
   display: flex;
   font-family: 'Noto Sans TC';
