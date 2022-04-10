@@ -15,7 +15,7 @@ async function signinCheck() {
             document.getElementById('login-btn').style.display = 'block';
             document.getElementById('logout-btn').style.display = 'none';
             console.log('user has not logged in yet.')
-            window.location='http://127.0.0.1:3000/';
+            window.location.replace("../");
           }
       })
 }

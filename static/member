@@ -153,7 +153,7 @@ async function logout() {
   document.getElementById('login-btn').style.display = 'block'
 
   if(document.getElementById("order-sec").style.display != ' none'){
-    window.location='http://127.0.0.1:3000/';
+    window.location.replace('../');
   }
 }
 

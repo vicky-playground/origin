@@ -32,15 +32,15 @@ TPDirect.card.setup({
         },
         // Styling ccv field
         'input.ccv': {
-        //     'font-size': '16px'
+             'font-size': '16px'
         },
         // Styling expiration-date field
         'input.expiration-date': {
-            // 'font-size': '16px'
+             'font-size': '16px'
         },
         // Styling card-number field
         'input.card-number': {
-            // 'font-size': '16px'
+             'font-size': '16px'
         },
         // style focus state
         ':focus': {
@@ -123,7 +123,7 @@ function onSubmit(event) {
         .then(result => result.json())
         .then(order => {
             console.log(order.number)
-            window.location='http://127.0.0.1:3000/thankyou?number='+order.number
+            window.location.replace('../thankyou?number='+order.number);
         })
         
         

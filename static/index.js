@@ -151,7 +151,7 @@ async function checkOrder(){
       .then(result => {
           console.log(result.data, result.data == null)
           if (result.data != null) { 
-            window.location = 'http://127.0.0.1:3000/booking';
+            window.location.replace("../booking");
           }
           else{
             openLoginForm();
