@@ -67,10 +67,7 @@ def getPrime():
             },
             "remember": True
         }
-        header = {
-            'Content-Type': 'application/json',
-            'x-api-key': "partner_6ID1DoDlaPrfHw6HBZsULfTYtDmWs0q0ZZGKMBpp4YICWBxgK97eK3RM", #"partner_0jYjqDcsRxtYsOMHRk8ttXzS64wYkjRL4FnRueeKsZueMbWXDDGwBJpS"
-        }
+        
         result = requests.post(payURL,headers={
                 "Content-Type":"application/json",
                 "x-api-key":"partner_6ID1DoDlaPrfHw6HBZsULfTYtDmWs0q0ZZGKMBpp4YICWBxgK97eK3RM"
