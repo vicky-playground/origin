@@ -46,7 +46,7 @@ img{
   width: 150px;
   height: 34px;
   line-height: 34px;
-  color: #448899;
+  color: #448899 ! important;
 }
   
 .btn-container {
