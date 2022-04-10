@@ -1,7 +1,6 @@
 // set the variable to get the value of id when calling onload=load(id) in the beginning
 let id = window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
 let imgId = 0;
-const bookingApi = '/api/booking' ;
 let addr;
 let site;
 let date;
@@ -169,7 +168,10 @@ let rightArrow = document.getElementById('right-arrow');
 rightArrow.addEventListener('click', NextImg);
 
 let leftArrow = document.getElementById('left-arrow');
-leftArrow.addEventListener('click', LastImg);
+if(leftArrow){
+  leftArrow.addEventListener('click', LastImg);
+}
+
 
 let am = document.getElementById('am');
 let pm = document.getElementById('pm');
@@ -186,10 +188,9 @@ function closeForm() {
   document.getElementById("login").style.display = "none";
 }
 
-function book(){
+async function book(){
   if (document.getElementById('logout-btn').style.display == 'none'){
     openLoginForm();
-    return;
   }
   site = window.location.href.split("/")[4];
   date = document.getElementById("date").value;
@@ -208,7 +209,7 @@ function book(){
   // the order info
   else{ 
     console.log(site, date, time, price); 
-    fetch(bookingApi, {
+    await fetch('/api/booking', {
         method: 'POST',
         body: JSON.stringify({ attractionId: site, date: date, time: time, price:price }),
         headers: new Headers({
@@ -227,6 +228,8 @@ function book(){
     })
   }
 }
+
+document.getElementById('book').addEventListener('click', book)
 
 async function checkOrder(){
   const UserApi = '/api/user'

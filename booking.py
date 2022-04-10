@@ -59,9 +59,9 @@ def  postTrip():
     time = requestJSON['time']
     session['price'] = price
     if date == '' or price == '' or time == '' : 
-        result_JSON = json.dumps({"error": bool(True) ,"message": "請填寫完整資料"})
+        result_JSON = json.dumps({"error": True ,"message": "請填寫完整資料"})
     elif id == '':
-        result_JSON = json.dumps({"error": bool(True) ,"message": "請登入會員"})
+        result_JSON = json.dumps({"error": True ,"message": "請登入會員"})
     else:
         conn = pool.get_conn()
         cursor = conn.cursor()
@@ -70,13 +70,20 @@ def  postTrip():
         # update if there has been a booking record
         if sql_run !=0: 
             try:
-                sql = "UPDATE booking SET attraction_id=%s, date=%s, time=%s, price=%s WHERE email=%s;"
-                sql_run = cursor.execute(sql,(attractionId, date, time, price, email))
+                cursor.execute("SET SQL_SAFE_UPDATES=0;")
+                cursor.execute("SET FOREIGN_KEY_CHECKS = 0;")
+                cursor.execute("DELETE FROM booking WHERE (email = '%s');",(email))
+                cursor.execute("SET SQL_SAFE_UPDATES=1;")
+                sql = "INSERT INTO booking (attraction_id, date, time, price, email) VALUES (%s,%s,%s,%s,%s)"
+                sql_run =  cursor.execute(sql, (attractionId, date, time, price, email))
+                #sql = "UPDATE booking SET attraction_id=%s, date=%s, time=%s, price=%s WHERE email=%s;"
+                #sql_run = cursor.execute(sql,(attractionId, date, time, price, email))
                 conn.commit() 
+                cursor.execute("SET FOREIGN_KEY_CHECKS = 1;")
                 print("update: ", attractionId, date, price, time) #3 2022-04-07 2000 morning
                 result_JSON = json.dumps({"ok": True})
             except:
-                result_JSON = json.dumps({"error": True,"message": "下訂失敗"})
+                result_JSON = json.dumps({"error": True,"message": "更新失敗"})
                 
         # insert if there is no booking record
         else:
@@ -102,9 +109,11 @@ def  deleteTrip():
             email = session['email'] #test@gmail.com
             conn = pool.get_conn()
             cursor = conn.cursor()
+            cursor.execute("SET FOREIGN_KEY_CHECKS = 0;")
             sql = "DELETE FROM booking WHERE email = %s;"
             cursor.execute(sql,(email))
             conn.commit()
+            cursor.execute("SET FOREIGN_KEY_CHECKS = 1;")
             print("record(s) deleted")
             result_JSON = json.dumps({"ok": True})
         except :

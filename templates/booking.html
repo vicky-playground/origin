@@ -9,6 +9,7 @@
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='CSS/site.css') }}">
   <script type='text/javascript' src='../static/member' defer></script>
   <script type='text/javascript' src='../static/booking.js' defer></script>  
+  <script type='text/javascript' src='../static/payment.js' defer></script>  
   <title>Taipei Attractions</title>
 </head>
 <body onload="renderTrip()">
@@ -69,9 +70,9 @@
     <div class='order-form'>
       <div class='form-contact'>您的聯絡資訊</div>
         <div class='form-detail'>
-          <div class='form-qa'>聯絡姓名 :<input class='form-input' type="text" value="" required></div>
-            <div class='form-qa'>聯絡信箱 :<input class='form-input' type="email" value="" required></div>
-              <div class='form-qa'>手機號碼 :<input class='form-input' type="tel" value="" required></div>
+          <div class='form-qa'>聯絡姓名 :<input class='form-input' type="text" id="contact-name" required></div>
+            <div class='form-qa'>聯絡信箱 :<input class='form-input' type="email" id="contact-email" required></div>
+              <div class='form-qa'>手機號碼 :<input class='form-input' type="tel" id="contact-phone" required></div>
         </div>
         <div class='book-reminder'>請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</div>
     </div>
@@ -81,9 +82,9 @@
         <div class='order-form'>
             <div class='form-contact'>信用卡付款資訊</div>
             <div class='form-detail'>
-                <div class='form-qa'>卡片號碼 :<input class='form-input' type="tel" inputmode="numeric" pattern="[0-9\s]{13,19}" autocomplete="cc-number" maxlength="19" placeholder="**** **** **** ****"></div>
-                <div class='form-qa'>過期時間 :<input class='form-input' type="text" placeholder="MM/YY"></div>
-                <div class='form-qa'>驗證密碼 :<input class='form-input' type="number" placeholder="CVV"></div>
+                <div class='form-qa'>卡片號碼 :<div class="tpfield" id="card-number"></div></div>
+                <div class='form-qa'>過期時間 :<div class="tpfield" id="card-expiration-date"></div></div>
+                <div class='form-qa'>驗證密碼 :<div class="tpfield" id="card-ccv"></div></div>
             </div>
         </div>
     </section>
@@ -93,10 +94,11 @@
         <div class='price-total'>總價:新台幣 
           <span id='total'>0</span> 元
         </div>
-        <input type='button' value='確認訂購並付款' id='book-check'></input>
+        <input type='button' value='確認訂購並付款' id='onSubmit'></input>
     </div>
   </div>
 </div>
 <footer id='footer'>COPYRIGHT © 2022 台北一日遊</footer>
+<script src="https://js.tappaysdk.com/tpdirect/v5.8.0"></script>
 </body>
 </html>

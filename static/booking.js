@@ -1,4 +1,5 @@
 const bookingApi = '/api/booking' ;
+let siteId, siteName, addr, img, date, time;
 
 async function signinCheck() {
   const UserApi = '/api/user'
@@ -42,11 +43,11 @@ async function renderTrip(){
   // build the parent of the trip contents (img, text..)
   tripInfo = document.getElementById("trip-info");
   // child 
-  let siteId = result.data['id'];
-  let img = result.data['image']; 
-  let name = result.data['name'];
-  let date = result['date'];
-  let time = result['time'];
+  siteId = result.data['id'];
+  img = result.data['image']; 
+  siteName = result.data['name'];
+  date = result['date'];
+  time = result['time'];
   // revise the info of time
   if (time == 'morning'){
     time = "早上九點到下午四點"
@@ -55,7 +56,7 @@ async function renderTrip(){
     time = '下午兩點到晚上九點'
   }
   let price = result['price'];
-  let addr = result.data['address'];
+  addr = result.data['address'];
   // img
   let tripImg = document.createElement("img");
   tripImg.setAttribute('class', 'trip-img');
@@ -95,9 +96,9 @@ async function renderTrip(){
   let nameSec=document.createElement("div");
   nameSec.setAttribute("class",'order-name-sec')
   nameSec.setAttribute("id","trip_name="+siteId);
-  name=document.createTextNode(name)
+  siteName=document.createTextNode(siteName)
   nameSec.appendChild(orderName)
-  nameSec.appendChild(name)
+  nameSec.appendChild(siteName)
   // date
   let dateSec=document.createElement("div")
   dateSec.setAttribute("class",'order-trip-sec')
@@ -206,3 +207,4 @@ async function deleteTrip(siteId){
     }
   })
 }
+
