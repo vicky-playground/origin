@@ -17,4 +17,5 @@
 #### 4/2 booking page
 ![Apr-03-2022 01-29-37](https://user-images.githubusercontent.com/90204593/161394451-f9c81de2-9e2b-41f9-84e7-ca4df1bbec6e.gif)<br/>
 #### 4/9 E-payment system (via [Tappay](https://www.tappaysdk.com/)，Test card 4242 4242 4242 4242 Expired month 01 Expired year 2023 ccv 123)
-![Apr-10-2022 21-54-21](https://user-images.githubusercontent.com/90204593/162623115-e2e3222c-15f2-4cfa-be46-72b1b98e4681.gif)
+![Apr-11-2022 00-31-57](https://user-images.githubusercontent.com/90204593/162629776-54d4c8b7-c20c-42d5-a283-ba9f7d0c1b38.gif)
+
