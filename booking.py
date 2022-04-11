@@ -58,6 +58,7 @@ def  postTrip():
     price = requestJSON['price']
     time = requestJSON['time']
     session['price'] = price
+    print("attractionId, date, time, price, email: ",attractionId, date, time, price, email)
     if date == '' or price == '' or time == '' : 
         result_JSON = json.dumps({"error": True ,"message": "請填寫完整資料"})
     elif id == '':
@@ -71,16 +72,16 @@ def  postTrip():
         if sql_run !=0: 
             try:
                 cursor.execute("SET SQL_SAFE_UPDATES=0;")
-                cursor.execute("SET FOREIGN_KEY_CHECKS = 0;")
-                cursor.execute("DELETE FROM booking WHERE (email = '%s');",(email))
-                cursor.execute("SET SQL_SAFE_UPDATES=1;")
-                sql = "INSERT INTO booking (attraction_id, date, time, price, email) VALUES (%s,%s,%s,%s,%s)"
-                sql_run =  cursor.execute(sql, (attractionId, date, time, price, email))
-                #sql = "UPDATE booking SET attraction_id=%s, date=%s, time=%s, price=%s WHERE email=%s;"
-                #sql_run = cursor.execute(sql,(attractionId, date, time, price, email))
+                cursor.execute("SET FOREIGN_KEY_CHECKS = 0;")  
+                print(type(attractionId),type(date),type(time),type(price))
+                sql = "UPDATE booking SET attraction_id=%s, date=%s, time=%s, price=%s WHERE email=%s;"
+                print("update: ", attractionId, date, time, price, email)
+                sql_run = cursor.execute(sql,(attractionId, date, time, price, email))
                 conn.commit() 
+                cursor.execute("SET SQL_SAFE_UPDATES=1;")
                 cursor.execute("SET FOREIGN_KEY_CHECKS = 1;")
-                print("update: ", attractionId, date, price, time) #3 2022-04-07 2000 morning
+                result=cursor.fetchall()
+                print("update: ", result)
                 result_JSON = json.dumps({"ok": True})
             except:
                 result_JSON = json.dumps({"error": True,"message": "更新失敗"})
