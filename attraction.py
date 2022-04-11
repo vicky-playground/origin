@@ -82,10 +82,6 @@ def attractionAPI():
 
         cursor.execute("SELECT id,stitle,CAT2,xbody,address,info,MRT,latitude,longitude,file FROM website.TPtrip WHERE stitle LIKE %s LIMIT %s, %s",(("%"+str(keyword)+"%"),(page+1)*12-12,(page+1)*12))
         result = cursor.fetchall()
-        # release the connection back to the pool for reuse
-        pool.release(conn)
-        cursor.close()
-
         dataLen = len(result)
         rowcount = cursor.rowcount
         # the organized result
@@ -100,7 +96,10 @@ def attractionAPI():
             if rowcount < 12 :
                 return jsonify({"nextPage": None, 'data' : finalResult}) 
             else:
-                return jsonify({"nextPage": page+1, 'data' : finalResult})        
+                return jsonify({"nextPage": page+1, 'data' : finalResult}) 
+        # release the connection back to the pool for reuse
+        pool.release(conn)
+        cursor.close()       
         return jsonify({"error":True, "message": "No relevant data"})
     # if there is no input of keyword
     else:
