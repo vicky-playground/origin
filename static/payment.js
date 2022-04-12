@@ -87,7 +87,7 @@ function onSubmit(event) {
             alert('get prime error ' + result.msg)
             return;
         }
-        alert('get prime successful! Prime: ' + result.card.prime)
+        alert('get prime successful!')
            // send prime to the server, to pay with Pay by Prime API .
         // Pay By Prime Docs: https://docs.tappaysdk.com/tutorial/zh/back.html#pay-by-prime-api
 
