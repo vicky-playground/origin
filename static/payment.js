@@ -87,7 +87,7 @@ function onSubmit(event) {
             alert('get prime error ' + result.msg)
             return;
         }
-        alert('get prime successful!')
+        alert('付款成功')
            // send prime to the server, to pay with Pay by Prime API .
         // Pay By Prime Docs: https://docs.tappaysdk.com/tutorial/zh/back.html#pay-by-prime-api
 
@@ -122,8 +122,8 @@ function onSubmit(event) {
         })
         .then(result => result.json())
         .then(order => {
-            console.log(order.number)
-            window.location.replace('../thankyou?number='+order.number);
+            console.log(order.data.number)
+            window.location.replace('../thankyou?number='+order.data.number);
         })
         
         

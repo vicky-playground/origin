@@ -28,16 +28,16 @@ async function renderTrip(){
   await fetch(bookingApi)      
   .then(res => res.json())
   .then(result => {
-  // when there is no order yet
-  if(result.data == null){
+  console.log("bookingAPI:",result.data )
+  // there is a paid order already
+  if(result.data == null || result.data == false){
     noOrder.style.display= 'flex';
     let footer = document.getElementById('footer');
     footer.style.paddingBottom = "1000px";
     return false;
-  }else{
-    noOrder.style.display = 'none';
   }
   
+  noOrder.style.display = 'none';
   // show the area of order info
   document.getElementById('order-sec').style.display = 'block'
   // build the parent of the trip contents (img, text..)
@@ -157,7 +157,15 @@ async function renderTrip(){
   upper.appendChild(deleteBtn)
   // put into the first parent
   tripInfo.appendChild(upper);
-})
+}) 
+
+  const UserApi = '/api/user'
+  await fetch(UserApi)
+    .then(res => res.json())
+    .then(result => {    
+      document.getElementById('contact-email').value = result.data.email;
+      document.getElementById('contact-name').value = result.data.name;
+  })
   renderPrice();
 }
 
@@ -178,6 +186,7 @@ renderPrice=()=>{
     document.getElementById('border').style.display = "none";
     document.getElementById('footer').style.paddingBottom = "1000px";
   }
+  console.log("render")
 }
 
 //delete

@@ -13,7 +13,6 @@ import member
 pool = Pool(host = "127.0.0.1", user = "root", password="12345678", database='website', port= 3306)
 pool.init()
 
-# get the trip not ordered yet
 @trip.route('/api/booking', methods=['GET'])
 def  getTrip():
     if "email" in session :
@@ -21,11 +20,21 @@ def  getTrip():
         email = session['email'] 
         conn = pool.get_conn()
         cursor = conn.cursor()
-        sql = "SELECT attraction_id, date, time, price, email, stitle, address, SUBSTRING_INDEX(file, ',', 1) AS image FROM booking INNER JOIN TPtrip ON TPtrip.id = booking.attraction_id WHERE email = %s" # ('https://www.travel.taipei/d_upload_ttn/sceneadmin/pic/11000340.jpg'
+        
+        #cursor.execute("SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;")
+        sql = "SELECT attraction_id, paid, date, time, price, email, stitle, address, SUBSTRING_INDEX(file, ',', 1) AS image FROM booking INNER JOIN TPtrip ON TPtrip.id = booking.attraction_id WHERE email = %s" # ('https://www.travel.taipei/d_upload_ttn/sceneadmin/pic/11000340.jpg'
         cursor.execute(sql, (email))
         result = cursor.fetchone()
+        conn.commit() 
+        sql = "SELECT paid FROM booking WHERE email = %s"
+        cursor.execute(sql, (email))
+        paid = cursor.fetchone()
+        conn.commit() 
+        print("paid$$$$ ", type(paid), paid['paid'])
         if not result: 
             result_JSON = json.dumps({"data": None,"message": "尚未下訂"})
+        elif paid['paid'] == 1:
+            result_JSON = json.dumps({"data": False,"message": "無正在下訂的訂單"})
         else: 
             attraction = {
                 'id':result['attraction_id'],
@@ -43,6 +52,7 @@ def  getTrip():
     else:
         result_JSON = json.dumps({"error": True,"message": "請登入會員"})
         print("message", "請登入會員", result_JSON)
+    
     pool.release(conn)
     cursor.close()
     return Response(result_JSON, mimetype='application/json')
@@ -66,21 +76,20 @@ def  postTrip():
     else:
         conn = pool.get_conn()
         cursor = conn.cursor()
+        #cursor.execute("SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;")
         sql = "select attraction_id FROM booking where (email = %s) ;"
         sql_run =  cursor.execute(sql, (email))
         # update if there has been a booking record
-        if sql_run !=0: 
+        if sql_run != 0: 
             try:
                 cursor.execute("SET SQL_SAFE_UPDATES=0;")
                 cursor.execute("SET FOREIGN_KEY_CHECKS = 0;")  
-                print(type(attractionId),type(date),type(time),type(price))
-                sql = "UPDATE booking SET attraction_id=%s, date=%s, time=%s, price=%s WHERE email=%s;"
-                print("update: ", attractionId, date, time, price, email)
+                sql = "UPDATE booking SET attraction_id=%s, date=%s, time=%s, price=%s, paid=0 WHERE email=%s;"
                 sql_run = cursor.execute(sql,(attractionId, date, time, price, email))
                 conn.commit() 
                 cursor.execute("SET SQL_SAFE_UPDATES=1;")
                 cursor.execute("SET FOREIGN_KEY_CHECKS = 1;")
-                result=cursor.fetchall()
+                result = cursor.fetchall()
                 print("update: ", result)
                 result_JSON = json.dumps({"ok": True})
             except:
@@ -89,7 +98,7 @@ def  postTrip():
         # insert if there is no booking record
         else:
             try:
-                sql = "INSERT INTO booking (attraction_id, date, time, price, email) VALUES (%s,%s,%s,%s,%s)"
+                sql = "INSERT INTO booking (attraction_id, date, time, price, email, paid) VALUES (%s,%s,%s,%s,%s,0)"
                 sql_run = cursor.execute(sql, (attractionId, date, time, price, email))
                 conn.commit() 
                 print("insert: ", attractionId, date, price, time)

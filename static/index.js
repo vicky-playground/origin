@@ -53,6 +53,7 @@ function display(nextPage, data, keyword) {
     // Create boxes
     let site = document.createElement('div');
     site.className = 'site';
+    // append the elements into the box
     let siteImg = document.createElement('img');
     siteImg.src = img;
     let siteName = document.createElement('div');
@@ -74,8 +75,12 @@ function display(nextPage, data, keyword) {
     siteInfo.appendChild(siteMrt);
     siteInfo.appendChild(siteType);
     document.getElementById('grid-container').appendChild(site);
-
     let id = data[i].id;
+
+    // add the hover effect
+    site.setAttribute("onmouseover", "zoomIn(this)");
+    site.setAttribute("onmouseout", "normalImg(this)");
+
     // redirect to the route of attraction(id) when clicking
     site.setAttribute('onclick',`window.location.href="/attraction/${id}"`)
   }
@@ -102,6 +107,17 @@ function display(nextPage, data, keyword) {
   }
 }
 
+
+function zoomIn(x) {
+  x.style.background = '#FFFFFF';
+  x.style.opacity = '0.5';
+  x.style.cursor = "pointer";
+}
+
+function normalImg(x) {
+  x.style.background = '';
+  x.style.opacity = '1';
+}
 
 // input keywords
 function search() {

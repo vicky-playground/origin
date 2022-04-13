@@ -39,6 +39,7 @@ def getPrime():
     requestJSON = request.get_json() 
     # store to the server
     userID = session['id']
+    email = session['email']
     attractionID = requestJSON['order']['trip']['attraction']['id']
     orderNumber = str(datetime.now().strftime('%Y%m%d%H%M%S'))+str(random.randint(1000,9999))
     contactName = requestJSON['order']['contact']['name']
@@ -73,13 +74,16 @@ def getPrime():
                 "x-api-key":"partner_6ID1DoDlaPrfHw6HBZsULfTYtDmWs0q0ZZGKMBpp4YICWBxgK97eK3RM"
             },data=json.dumps(payByPrime))
         res = result.json()
-        # if the transaction fails
-        if res['status'] !=0: 
-            resultJSON = json.dumps({"error": True,"number":orderNumber,"message": res['msg']}) 
+        print("res['status']:", res['status'])
         # if the transaction succeeds
-        else: 
+        if res['status'] !=0: 
+            print("booking email", email)
+            sql = "UPDATE booking SET paid=1 WHERE email=%s"
+            cursor.execute(sql,(email))
+            conn.commit()
             sql = "UPDATE orders SET payment_status=0 WHERE order_number=%s"
             cursor.execute(sql,orderNumber)
+            conn.commit()
             resultJSON = json.dumps({
                     "data":{
                     "number":orderNumber,
@@ -87,7 +91,13 @@ def getPrime():
                         "status":res['status'],
                         "message":"付款成功"
                     }}})
+
+            print("OK!!!!")
         
+        # if the transaction fails
+        else: 
+            resultJSON = json.dumps({"error": True,"number":orderNumber,"message": res['msg']}) 
+ 
     except:
         resultJSON = json.dumps({"error": True, "message": "建立訂單失敗"})
     finally:
