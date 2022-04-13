@@ -7,13 +7,7 @@ async function signinCheck() {
       .then(res => res.json())
       .then(result => {
           console.log("result: ", result.data, result.data == null)
-          if (result.data != null) { 
-            document.getElementById('login-btn').style.display = 'none';
-            document.getElementById('logout-btn').style.display = 'block';
-            console.log('user has already logged in')
-          } else {
-            document.getElementById('login-btn').style.display = 'block';
-            document.getElementById('logout-btn').style.display = 'none';
+          if (result.data == null) { 
             console.log('user has not logged in yet.')
             window.location.replace("../");
           }
