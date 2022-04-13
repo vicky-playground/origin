@@ -429,6 +429,13 @@ input[type='date'] {
   top: 0;
 }
 
+#login-btn{
+  display: none;
+}
+#logout-btn{
+  display: none;
+}
+
 #login {
   display: none;
 }
