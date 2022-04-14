@@ -1,3 +1,5 @@
+let userData;
+
 function openLoginForm() {
   document.getElementById('login-form').style.display = 'block';
 }
@@ -26,7 +28,7 @@ const switchForm = () => {
     document.getElementById('signup-form').style.display = 'none';
     document.getElementById('login-form').style.display = 'block';
     // clear the previous data
-    document.getElementById("msg-signup").innerHTML = '';
+    document.getElementById("signup-msg").innerHTML = '';
     document.getElementById('signup-name').value = '';
     document.getElementById('signup-email').value = '';
     document.getElementById('signup-password').value = '';
@@ -40,7 +42,8 @@ async function signinCheck() {
   await fetch(UserApi)
       .then(res => res.json())
       .then(result => {
-          console.log(result.data, result.data == null)
+         //console.log(result.data, result.data == null)
+          userData = result.data;
           if (result.data != null) { 
             document.getElementById('login-btn').style.display = 'none';
             document.getElementById('logout-btn').style.display = 'block';
@@ -92,7 +95,10 @@ async function login(e) {
   }
 }
 
-document.getElementById('login-submit').addEventListener('click', login)
+let sub = document.getElementById('login-submit')
+if (sub){
+  sub.addEventListener('click', login)
+}
 
 // email format 
 const mailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -138,7 +144,7 @@ document.getElementById('signup-submit').addEventListener('click', signup)
 // log out
 async function logout() {
   const UserApi = '/api/user'
-  const result = await fetch(UserApi, {
+  let result = await fetch(UserApi, {
       method: 'DELETE'
   })
   console.log(result)
@@ -147,7 +153,7 @@ async function logout() {
   document.getElementById('login-btn').style.display = 'block'
 
   if(document.getElementById("order-sec").style.display != ' none'){
-    window.location='http://127.0.0.1:3000/';
+    window.location.replace('../');
   }
 }
 

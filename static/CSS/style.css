@@ -316,7 +316,12 @@ img{
   }
 }
 
-
+#login-btn{
+  display: none;
+}
+#logout-btn{
+  display: none;
+}
 /* The modal - hidden by default */
 .modal-bottom {
   display: none;

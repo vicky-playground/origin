@@ -46,7 +46,7 @@ img{
   width: 150px;
   height: 34px;
   line-height: 34px;
-  color: #448899;
+  color: #448899 ! important;
 }
   
 .btn-container {
@@ -427,6 +427,13 @@ input[type='date'] {
   width: 100vw;
   height: 100vh;
   top: 0;
+}
+
+#login-btn{
+  display: none;
+}
+#logout-btn{
+  display: none;
 }
 
 #login {

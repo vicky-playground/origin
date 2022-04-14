@@ -151,12 +151,12 @@ display: flex;
 }
 .form-qa{
   margin-top: 15px;
-
-font-family: 'Noto Sans TC';
-font-style: normal;
-font-weight: 400;
-font-size: 16px;
-color: #666666;
+  display: flex;
+  font-family: 'Noto Sans TC';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  color: #666666;
 }
 .trip-price{
 font-family: 'Noto Sans TC';
@@ -213,8 +213,7 @@ color: #666666;
   font-size: 16px;
   color: #666666;
   position:absolute;
-  top: 94%;
-  right: 10px;
+  top: 92%;
 }
 
 #book-check{

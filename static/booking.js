@@ -1,4 +1,5 @@
 const bookingApi = '/api/booking' ;
+let siteId, siteName, addr, img, date, time;
 
 async function signinCheck() {
   const UserApi = '/api/user'
@@ -6,15 +7,9 @@ async function signinCheck() {
       .then(res => res.json())
       .then(result => {
           console.log("result: ", result.data, result.data == null)
-          if (result.data != null) { 
-            document.getElementById('login-btn').style.display = 'none';
-            document.getElementById('logout-btn').style.display = 'block';
-            console.log('user has already logged in')
-          } else {
-            document.getElementById('login-btn').style.display = 'block';
-            document.getElementById('logout-btn').style.display = 'none';
+          if (result.data == null) { 
             console.log('user has not logged in yet.')
-            window.location='http://127.0.0.1:3000/';
+            window.location.replace("../");
           }
       })
 }
@@ -27,26 +22,26 @@ async function renderTrip(){
   await fetch(bookingApi)      
   .then(res => res.json())
   .then(result => {
-  // when there is no order yet
-  if(result.data == null){
+  console.log("bookingAPI:",result.data )
+  // there is a paid order already
+  if(result.data == null || result.data == false){
     noOrder.style.display= 'flex';
     let footer = document.getElementById('footer');
     footer.style.paddingBottom = "1000px";
     return false;
-  }else{
-    noOrder.style.display = 'none';
   }
   
+  noOrder.style.display = 'none';
   // show the area of order info
   document.getElementById('order-sec').style.display = 'block'
   // build the parent of the trip contents (img, text..)
   tripInfo = document.getElementById("trip-info");
   // child 
-  let siteId = result.data['id'];
-  let img = result.data['image']; 
-  let name = result.data['name'];
-  let date = result['date'];
-  let time = result['time'];
+  siteId = result.data['id'];
+  img = result.data['image']; 
+  siteName = result.data['name'];
+  date = result['date'];
+  time = result['time'];
   // revise the info of time
   if (time == 'morning'){
     time = "早上九點到下午四點"
@@ -55,7 +50,7 @@ async function renderTrip(){
     time = '下午兩點到晚上九點'
   }
   let price = result['price'];
-  let addr = result.data['address'];
+  addr = result.data['address'];
   // img
   let tripImg = document.createElement("img");
   tripImg.setAttribute('class', 'trip-img');
@@ -95,9 +90,9 @@ async function renderTrip(){
   let nameSec=document.createElement("div");
   nameSec.setAttribute("class",'order-name-sec')
   nameSec.setAttribute("id","trip_name="+siteId);
-  name=document.createTextNode(name)
+  siteName=document.createTextNode(siteName)
   nameSec.appendChild(orderName)
-  nameSec.appendChild(name)
+  nameSec.appendChild(siteName)
   // date
   let dateSec=document.createElement("div")
   dateSec.setAttribute("class",'order-trip-sec')
@@ -156,7 +151,15 @@ async function renderTrip(){
   upper.appendChild(deleteBtn)
   // put into the first parent
   tripInfo.appendChild(upper);
-})
+}) 
+
+  const UserApi = '/api/user'
+  await fetch(UserApi)
+    .then(res => res.json())
+    .then(result => {    
+      document.getElementById('contact-email').value = result.data.email;
+      document.getElementById('contact-name').value = result.data.name;
+  })
   renderPrice();
 }
 
@@ -177,6 +180,7 @@ renderPrice=()=>{
     document.getElementById('border').style.display = "none";
     document.getElementById('footer').style.paddingBottom = "1000px";
   }
+  console.log("render")
 }
 
 //delete
@@ -206,3 +210,4 @@ async function deleteTrip(siteId){
     }
   })
 }
+
