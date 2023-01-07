@@ -4,7 +4,7 @@ body
   margin: 0px;
   padding: 0px;
   font-size: 16px;
-  font-family: "微軟正黑體", "Microsoft JhengHei", "Segoe UI Semibold", "Segoe UI", "Lucida Grande", Verdana, Arial, Helvetica, sans-serif;
+  font-family: "å¾®è»Ÿæ­£é»‘é«”", "Microsoft JhengHei", "Segoe UI Semibold", "Segoe UI", "Lucida Grande", Verdana, Arial, Helvetica, sans-serif;
   position: relative;
   color: #666666;
 }
@@ -83,21 +83,23 @@ img{
 }
   
 #left-arrow {
-  position: absolute;
-  left: 10px;
   cursor: pointer;
+  position: absolute;
+  z-index: 100;
+  width: 30px;
+  height: 30px;
   top: 45%;
-  z-index: 1;
-  opacity:0.8;
+  left: 8%;
 }
   
 #right-arrow {
-  position: absolute;
-  right: 10px;
   cursor: pointer;
+  position: absolute;
+  z-index: 100;
+  width: 30px;
+  height: 30px;
+  left: 87%;
   top: 45%;
-  
-  opacity:0.8;
 }
 
 .circle-sec{

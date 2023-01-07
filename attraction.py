@@ -4,7 +4,7 @@ from numpy import integer
 import json
 import pymysql
 import pymysql.cursors
-from pymysqlpool.pool import Pool
+from dbutils.pooled_db import PooledDB
 import ast
 pymysql.install_as_MySQLdb()
 from collections import OrderedDict
@@ -15,8 +15,8 @@ from flask_jwt_extended import *
 import member
 
 # connect to the local DB
-pool = Pool(host = "127.0.0.1", user = "root", password="12345678", database='website', port= 3306)
-pool.init()
+pool = PooledDB(creator=pymysql, host = "127.0.0.1", user = "root", password="12345678", database='website', port= 3306)
+
 
 """
 # conenct the pool
@@ -77,7 +77,7 @@ def attractionAPI():
     # if there is a keyword
     if keyword != None and keyword != "":
         # conenct the pool
-        conn = pool.get_conn()
+        conn = pool.connection()
         cursor = conn.cursor()
 
         cursor.execute("SELECT id,stitle,CAT2,xbody,address,info,MRT,latitude,longitude,file FROM website.TPtrip WHERE stitle LIKE %s LIMIT %s, %s",(("%"+str(keyword)+"%"),(page+1)*12-12,(page+1)*12))
@@ -87,9 +87,9 @@ def attractionAPI():
         # the organized result
         finalResult = []
         for site in result:
-            data = OrderedDict(id = site["id"], name = site["stitle"], category = site["CAT2"], description = site["xbody"], address = site["address"], transport = site["info"], mrt = site["MRT"], latitude = site["latitude"], longitude = site["longitude"], images = site["file"])
+            data = OrderedDict(id = site[0], name = site[1], category = site[2], description = site[3], address = site[4], transport = site[5], mrt = site[6], latitude = site[7], longitude = site[8], images = site[9])
             # convert the set of images to a list
-            data["images"] = ast.literal_eval(data["images"])
+            data["images"] =  data["images"].split(',')
             finalResult.append(data)
         if dataLen > 0:
             # output
@@ -98,19 +98,19 @@ def attractionAPI():
             else:
                 return jsonify({"nextPage": page+1, 'data' : finalResult}) 
         # release the connection back to the pool for reuse
-        pool.release(conn)
+        conn.close()
         cursor.close()       
         return jsonify({"error":True, "message": "No relevant data"})
     # if there is no input of keyword
     else:
         if page == None:
             page = 0
-        conn = pool.get_conn()
+        conn = pool.connection()
         cursor = conn.cursor()
         cursor.execute("SELECT id,stitle,CAT2,xbody,address,info,MRT,latitude,longitude,file FROM website.TPtrip LIMIT %s, %s",((page+1)*12-11,(page+1)*12))
         result = cursor.fetchall()
         # release the connection back to the pool for reuse
-        pool.release(conn)
+        conn.close()
         cursor.close()
         dataLen = len(result)
         rowcount = cursor.rowcount
@@ -118,9 +118,9 @@ def attractionAPI():
         finalResult = []
         # convert the set of images to a list
         for site in result:
-            data = OrderedDict(id = site["id"], name = site["stitle"], category = site["CAT2"], description = site["xbody"], address = site["address"], transport = site["info"], mrt = site["MRT"], latitude = site["latitude"], longitude = site["longitude"], images = site["file"])
+            data = OrderedDict(id = site[0], name = site[1], category = site[2], description = site[3], address = site[4], transport = site[5], mrt = site[6], latitude = site[7], longitude = site[8], images = site[9])
             # convert the set of images to a list
-            data["images"] = ast.literal_eval(data["images"])
+            data["images"] =  data["images"].split(',')
             finalResult.append(data)
         if dataLen > 0:
             # output
@@ -135,19 +135,19 @@ def attractionAPI():
 def attractionIdApi(attractionId):
     try:
         # conenct the pool
-        conn = pool.get_conn()
+        conn = pool.connection()
         cursor = conn.cursor()
 	    # API parameter: page & keyword
         cursor.execute("SELECT id,stitle,CAT2,xbody,address,info,MRT,latitude,longitude,file FROM website.TPtrip WHERE id = %s",(attractionId))
-        result=cursor.fetchone()
-        if result != 0:   
-            finalResult = {"data":OrderedDict(id = result["id"], name = result["stitle"], category = result["CAT2"], description = result["xbody"], address = result["address"], transport = result["info"], mrt = result["MRT"], latitude = result["latitude"], longitude = result["longitude"], images = result["file"])}
+        site=cursor.fetchone()
+        if site != 0:   
+            finalResult = {"data":OrderedDict(id = site[0], name = site[1], category = site[2], description = site[3], address = site[4], transport = site[5], mrt = site[6], latitude = site[7], longitude = site[8], images = site[9])}
             # convert the set of images to a list
-            finalResult["data"]["images"] = ast.literal_eval(finalResult["data"]["images"])
+            finalResult["data"]["images"] = finalResult["data"]["images"].split(',')
             return jsonify(finalResult)
     except:
         return jsonify({"error":True,"message":"No relevant data"})
     finally:
        # release the connection back to the pool for reuse
-        pool.release(conn)
+        conn.close()
         cursor.close()

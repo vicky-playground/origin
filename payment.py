@@ -5,7 +5,7 @@ from numpy import integer
 import json
 import pymysql
 import pymysql.cursors
-from pymysqlpool.pool import Pool
+from dbutils.pooled_db import PooledDB
 import ast
 pymysql.install_as_MySQLdb()
 from collections import OrderedDict
@@ -20,8 +20,7 @@ import random
 import requests,json
 
 # connect to the local DB
-pool = Pool(host = "127.0.0.1", user = "root", password="12345678", database='website', port= 3306)
-pool.init()
+pool = PooledDB(creator=pymysql, host = "127.0.0.1", user = "root", password="12345678", database='website', port= 3306)
 
 """
  {
@@ -45,7 +44,7 @@ def getPrime():
     contactName = requestJSON['order']['contact']['name']
     contactMail = requestJSON['order']['contact']['email']
     contactPhone = requestJSON['order']['contact']['phone']
-    conn = pool.get_conn()
+    conn = pool.connection()
     cursor = conn.cursor()
     sql = "insert into orders (user_id,attraction_id,order_number,contact_name,contact_mail,contact_phone) values (%s,%s,%s,%s,%s,%s)"
     try:
@@ -101,7 +100,7 @@ def getPrime():
     except:
         resultJSON = json.dumps({"error": True, "message": "建立訂單失敗"})
     finally:
-        pool.release(conn)
+        conn.close()
         cursor.close()   
         return Response(resultJSON, mimetype='application/json')
     
@@ -111,7 +110,7 @@ def getPrime():
         
 @pay.route('/api/order/<orderNumber>', methods=['GET'])
 def getOrder(orderNumber):
-    conn = pool.get_conn()
+    conn = pool.connection()
     cursor = conn.cursor()
     sql = "SELECT * FROM orders WHERE order_number = %s ;"
     cursor.execute(sql,(orderNumber))
@@ -148,12 +147,12 @@ def getOrder(orderNumber):
         }
         
         resultJSON = json.dumps({'data':data}, default = str)
-        pool.release(conn)
+        conn.close()
         cursor.close()
         return Response(resultJSON, mimetype='application/json')
     else :
         resultJSON = json.dumps({"error": True,"message": "no data or without signin"}) 
-        pool.release(conn)
+        conn.close()
         cursor.close()
         return Response(resultJSON, mimetype='application/json')
             

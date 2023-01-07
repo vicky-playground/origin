@@ -3,14 +3,14 @@ user = Blueprint('member', __name__)
 import json
 import pymysql
 import pymysql.cursors
-from pymysqlpool.pool import Pool
+from dbutils.pooled_db import PooledDB
 pymysql.install_as_MySQLdb()
 from flask_jwt_extended import *
 
 
 # connect to the local DB
-pool = Pool(host = "127.0.0.1", user = "root", password="12345678", database='website', port= 3306)
-pool.init()
+pool = PooledDB(creator=pymysql, host = "127.0.0.1", user = "root", password="12345678", database='website', port= 3306)
+
 
 
 # get the current user's data from session  
@@ -36,14 +36,14 @@ def signup():
     if name == '' or email == '' or password == '' : 
         resultJSON = json.dumps({"error": True, "message": "資料不能為空白" })
     else:
-        conn = pool.get_conn()
+        conn = pool.connection()
         cursor = conn.cursor()
-        sql = "SELECT COUNT(*) FROM user WHERE email = %s"
+        sql = "SELECT * FROM user WHERE email = %s"
         cursor.execute(sql, (email))
         user = cursor.fetchone() 
         msg = ''
         # if there is already the user saved in the db
-        if user['COUNT(*)'] > 0:
+        if user is not None:
             print("duplicate")
             msg = "已被註冊的email"
             resultJSON = json.dumps({"error": True, "message": msg})
@@ -53,7 +53,7 @@ def signup():
             cursor.execute(sql, (name, email, password))
             conn.commit()
             resultJSON = json.dumps({"ok": True})
-        pool.release(conn)
+        conn.close()
         cursor.close()
     return Response(resultJSON, mimetype='application/json')
 
@@ -97,7 +97,7 @@ def login():
     requestJSON = request.get_json()
     email = requestJSON['email']
     password = requestJSON['Password']
-    conn = pool.get_conn()
+    conn = pool.connection()
     cursor = conn.cursor()
     sql = "SELECT id , email, name, password FROM user WHERE email = %s and password = %s;"
     cursor.execute(sql, (email, password))
@@ -105,12 +105,12 @@ def login():
     if user is None:
         resultJSON = json.dumps({"error": True, "message": "帳號或密碼錯誤" })
     else :
-        session['id']= user['id']
-        session['email'] = user['email']
-        session['name'] = user['name']
+        session['id']= user[0]
+        session['email'] = user[1]
+        session['name'] = user[2]
         resultJSON = json.dumps({"ok": True})
         
-    pool.release(conn)
+    conn.close()
     cursor.close()
     return Response(resultJSON, mimetype='application/json')
 

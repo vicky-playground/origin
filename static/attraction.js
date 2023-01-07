@@ -164,10 +164,11 @@ function displayPM() {
   document.querySelector('.price').innerHTML = ' 新台幣 2500 元';
 }
 
-let rightArrow = document.getElementById('right-arrow');
+
+let rightArrow = document.querySelector('#right-arrow');
 rightArrow.addEventListener('click', NextImg);
 
-let leftArrow = document.getElementById('left-arrow');
+let leftArrow = document.getElementById('#left-arrow');
 if(leftArrow){
   leftArrow.addEventListener('click', LastImg);
 }
