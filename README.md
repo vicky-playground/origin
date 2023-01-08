@@ -1,8 +1,11 @@
 # WeHelp Phase 2
 
-## home page: http://54.169.87.139:3000/ <br/>
-## site page: http://54.169.87.139:3000/attraction/10 <br/>
-## booking page: http://54.169.87.139:3000/booking
+Test account: test@gmail.com
+Test password: test1234
+
+## home page: http://3.15.192.155:3000/ <br/>
+## site page: http://3.15.192.155:3000/attraction/10 <br/>
+## booking page: http://3.15.192.155:3000/booking
 
 ### Wireframe: https://www.figma.com/file/CeFwqBSbNWZbWz2ih4YS6z/Taipei-Trip-%E5%8F%B0%E5%8C%97%E4%B8%80%E6%97%A5%E9%81%8A?node-id=34%3A277
 
