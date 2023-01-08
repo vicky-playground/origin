@@ -1,6 +1,6 @@
 # WeHelp Phase 2
 
-Test account: test@gmail.com; Test password: test1234
+#Test account: test@gmail.com; Test password: test1234
 
 ## home page: http://3.15.192.155:3000/ <br/>
 ## site page: http://3.15.192.155:3000/attraction/10 <br/>
